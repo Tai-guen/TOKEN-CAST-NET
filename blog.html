@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog – TOKEN CAST NET</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Sora:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">
+        <span class="logo-icon">◈</span>
+        <span>TOKEN<span class="accent"> CAST</span> NET</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="blog.html" class="active">Blog</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="index.html#products">Sản phẩm</a></li>
+        <li><a href="index.html#contact" class="btn-nav">Liên hệ</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <section class="blog-hero-section">
+    <div class="container">
+      <div class="section-tag">BLOG & KIẾN THỨC</div>
+      <h1 class="section-title">Phân tích & <span class="gradient-text">Chia sẻ</span></h1>
+      <p style="color:var(--text2);max-width:500px;">Kiến thức chuyên sâu về crypto, tài chính số và chiến lược đầu tư từ Ahaibi.</p>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm bài viết..." />
+        <button>🔍</button>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-bottom:100px;">
+    <div class="container">
+      <div class="category-pills" id="categoryPills">
+        <span class="pill active" data-cat="all">Tất cả</span>
+        <span class="pill" data-cat="analysis">Phân tích</span>
+        <span class="pill" data-cat="altcoin">Altcoin</span>
+        <span class="pill" data-cat="knowledge">Kiến thức</span>
+        <span class="pill" data-cat="defi">DeFi</span>
+        <span class="pill" data-cat="nft">NFT</span>
+        <span class="pill" data-cat="macro">Vĩ mô</span>
+      </div>
+
+      <div class="blog-full-grid" id="blogGrid">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2026 Token Cast Net · Ahaibi. All rights reserved.</span>
+        <span>⚠️ Không phải lời khuyên tài chính. DYOR.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+  <script>
+    const posts = [
+      { cat:"analysis", icon:"📊", tag:"Phân tích", title:"Bitcoin sẽ chạm $100K trong Q3 2025? Phân tích on-chain chuyên sâu", desc:"Dữ liệu on-chain cho thấy tín hiệu tích lũy mạnh từ cá voi, MVRV Ratio đang ở vùng lý tưởng cho một đợt bull run.", date:"18 Th4, 2026", read:"8 phút" },
+      { cat:"altcoin", icon:"🚀", tag:"Altcoin", title:"Top 5 Altcoin tiềm năng nhất cho chu kỳ Bull 2025", desc:"Danh sách dự án có nền tảng vững chắc, đội ngũ mạnh và roadmap rõ ràng cho giai đoạn tăng giá tiếp theo.", date:"15 Th4, 2026", read:"6 phút" },
+      { cat:"knowledge", icon:"🛡️", tag:"Kiến thức", title:"Quản trị rủi ro trong đầu tư crypto: Chiến lược từ chuyên gia", desc:"Cách thiết lập stop-loss, phân bổ danh mục và kiểm soát tâm lý khi thị trường biến động mạnh.", date:"10 Th4, 2026", read:"10 phút" },
+      { cat:"defi", icon:"💧", tag:"DeFi", title:"DeFi 3.0: Giao thức lending mới thay đổi cuộc chơi", desc:"Tổng quan các giao thức DeFi thế hệ mới với APY ổn định và bảo mật được cải thiện đáng kể.", date:"8 Th4, 2026", read:"7 phút" },
+      { cat:"analysis", icon:"📈", tag:"Phân tích", title:"Ethereum Merge aftermath: Deflationary supply & staking yields", desc:"Sau The Merge, ETH đã trở thành tài sản giảm phát. Phân tích tác động dài hạn đến giá trị đồng coin.", date:"5 Th4, 2026", read:"9 phút" },
+      { cat:"macro", icon:"🌐", tag:"Vĩ mô", title:"Fed cắt lãi suất và tác động đến thị trường crypto 2026", desc:"Chu kỳ cắt giảm lãi suất của Fed thường kéo theo dòng tiền vào các tài sản rủi ro như crypto.", date:"2 Th4, 2026", read:"5 phút" },
+      { cat:"nft", icon:"🎨", tag:"NFT", title:"NFT 2.0: Từ JPEG đến tài sản số có tiện ích thực sự", desc:"Sự chuyển mình của thị trường NFT từ speculation sang utility – gaming, music, real estate.", date:"30 Th3, 2026", read:"6 phút" },
+      { cat:"knowledge", icon:"🤖", tag:"Kiến thức", title:"Tự động hóa chiến lược đầu tư với AI & trading bots", desc:"Hướng dẫn xây dựng bot giao dịch đơn giản và cách AI có thể tối ưu hóa danh mục của bạn.", date:"25 Th3, 2026", read:"12 phút" },
+      { cat:"altcoin", icon:"⚡", tag:"Altcoin", title:"Solana vs Ethereum 2026: Cuộc chiến Layer 1 chưa ngã ngũ", desc:"So sánh hệ sinh thái, tốc độ, phí gas và xu hướng adoption của hai blockchain hàng đầu.", date:"20 Th3, 2026", read:"8 phút" },
+    ];
+
+    let currentCat = "all";
+
+    function renderPosts(filter = "all", search = "") {
+      const grid = document.getElementById("blogGrid");
+      const filtered = posts.filter(p =>
+        (filter === "all" || p.cat === filter) &&
+        (search === "" || p.title.toLowerCase().includes(search.toLowerCase()))
+      );
+      grid.innerHTML = filtered.map(p => `
+        <div class="blog-card-full">
+          <div class="blog-thumb">${p.icon}</div>
+          <div class="blog-body">
+            <div class="blog-tag">${p.tag}</div>
+            <h3>${p.title}</h3>
+            <p>${p.desc}</p>
+            <div class="blog-meta">
+              <span>Ahaibi</span><span>·</span><span>${p.date}</span>
+              <span class="blog-read">${p.read}</span>
+            </div>
+          </div>
+        </div>
+      `).join("");
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--text2);padding:60px 0;">Không tìm thấy bài viết nào.</div>`;
+      }
+    }
+
+    document.querySelectorAll(".pill").forEach(pill => {
+      pill.addEventListener("click", () => {
+        document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        currentCat = pill.dataset.cat;
+        renderPosts(currentCat, document.getElementById("searchInput").value);
+      });
+    });
+
+    document.getElementById("searchInput").addEventListener("input", e => {
+      renderPosts(currentCat, e.target.value);
+    });
+
+    renderPosts();
+  </script>
+</body>
+</html>
