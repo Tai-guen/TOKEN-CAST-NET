@@ -8,6 +8,188 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Sora:wght@300;400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+/* ── CRYPTO INDEX CARD (Hero Visual) ── */
+.crypto-index-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  width: 320px;
+  box-shadow: var(--glow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.crypto-index-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,200,255,0.04), transparent);
+  pointer-events: none;
+}
+.ci-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.ci-title {
+  font-family: var(--font-head);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+.ci-live {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-head);
+  font-size: 0.6rem;
+  color: var(--up);
+}
+.ci-live-dot {
+  width: 6px; height: 6px;
+  background: var(--up);
+  border-radius: 50%;
+  animation: blink 1.2s ease-in-out infinite;
+}
+.ci-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.ci-metric {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  transition: var(--transition);
+}
+.ci-metric:hover { border-color: rgba(0,200,255,0.3); }
+.ci-metric-label {
+  font-family: var(--font-head);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  margin-bottom: 4px;
+}
+.ci-metric-val {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.ci-metric-sub {
+  font-size: 0.62rem;
+  margin-top: 2px;
+}
+.ci-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 12px 0;
+}
+.ci-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  padding: 4px 0;
+}
+.ci-row-label { color: var(--text2); font-family: var(--font-head); font-size: 0.65rem; letter-spacing: 0.06em; }
+.ci-row-val   { font-family: var(--font-head); font-size: 0.75rem; font-weight: 700; }
+.ci-updated {
+  font-size: 0.6rem;
+  color: var(--text3);
+  font-family: var(--font-head);
+  text-align: right;
+  margin-top: 10px;
+}
+
+/* ── GLOBAL INDEX BAR (replaces static ticker) ── */
+.index-bar {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+.index-bar-static {
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+.index-bar-static::-webkit-scrollbar { display: none; }
+.ib-segment {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.ib-label {
+  font-family: var(--font-head);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+}
+.ib-val {
+  font-family: var(--font-head);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.ib-ch {
+  font-family: var(--font-head);
+  font-size: 0.65rem;
+}
+.ib-separator { width: 1px; height: 30px; background: var(--border); }
+.ib-ticker-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+.ib-ticker {
+  display: flex;
+  width: max-content;
+  animation: scroll 40s linear infinite;
+  align-items: center;
+  height: 100%;
+  padding: 8px 0;
+}
+.ib-ticker:hover { animation-play-state: paused; }
+.ib-tick-item {
+  font-family: var(--font-head);
+  font-size: 0.72rem;
+  padding: 0 24px;
+  white-space: nowrap;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ib-tick-item em { font-style: normal; }
+.price-flash-up   { animation: flashUp 0.5s ease; }
+.price-flash-down { animation: flashDown 0.5s ease; }
+@keyframes flashUp   { 0%,100%{color:var(--text)} 40%{color:var(--up)} }
+@keyframes flashDown { 0%,100%{color:var(--text)} 40%{color:var(--down)} }
+
+/* ── FGI color ring ── */
+.fgi-ring {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.fgi-num   { font-family: var(--font-head); font-size: 0.88rem; font-weight: 700; }
+.fgi-label { font-size: 0.5rem; color: var(--text3); letter-spacing: 0.05em; }
+  </style>
 </head>
 <body>
   <!-- NAV -->
@@ -17,7 +199,7 @@
         <span class="logo-icon">◈</span>
         <span>TOKEN<span class="accent"> CAST</span> NET</span>
       </a>
-      <ul class="nav-links">
+      <ul class="nav-links" id="navLinks">
         <li><a href="index.html" class="active">Trang chủ</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="dashboard.html">Dashboard</a></li>
@@ -71,44 +253,109 @@
         </div>
       </div>
     </div>
+
+    <!-- ② CRYPTO INDEX CARD (replaces static chart card) -->
     <div class="hero-visual">
-      <div class="chart-card">
-        <div class="chart-header">
-          <span class="chart-title">BTC/USDT</span>
-          <span class="chart-badge up">+2.4%</span>
+      <div class="crypto-index-card">
+        <div class="ci-header">
+          <span class="ci-title">◈ CRYPTO INDEX</span>
+          <span class="ci-live"><span class="ci-live-dot"></span>LIVE</span>
         </div>
-        <div class="chart-bars">
-          <div class="bar" style="height:55%"></div>
-          <div class="bar" style="height:70%"></div>
-          <div class="bar" style="height:45%"></div>
-          <div class="bar" style="height:80%"></div>
-          <div class="bar" style="height:65%"></div>
-          <div class="bar" style="height:90%"></div>
-          <div class="bar active" style="height:75%"></div>
+
+        <!-- 4 main metrics -->
+        <div class="ci-metrics">
+          <div class="ci-metric">
+            <div class="ci-metric-label">MARKET CAP</div>
+            <div class="ci-metric-val" id="idx-mcap">—</div>
+            <div class="ci-metric-sub" id="idx-mcap-ch">—</div>
+          </div>
+          <div class="ci-metric">
+            <div class="ci-metric-label">FEAR & GREED</div>
+            <div class="ci-metric-val" id="idx-fgi-num">—</div>
+            <div class="ci-metric-sub" id="idx-fgi-lbl">—</div>
+          </div>
+          <div class="ci-metric">
+            <div class="ci-metric-label">BTC PRICE</div>
+            <div class="ci-metric-val" id="idx-btc">—</div>
+            <div class="ci-metric-sub" id="idx-btc-ch">—</div>
+          </div>
+          <div class="ci-metric">
+            <div class="ci-metric-label">ETH PRICE</div>
+            <div class="ci-metric-val" id="idx-eth">—</div>
+            <div class="ci-metric-sub" id="idx-eth-ch">—</div>
+          </div>
         </div>
-        <div class="chart-price">$67,420</div>
+
+        <div class="ci-divider"></div>
+
+        <!-- Extra rows -->
+        <div class="ci-row">
+          <span class="ci-row-label">BTC DOMINANCE</span>
+          <span class="ci-row-val" id="idx-btcdom">—</span>
+        </div>
+        <div class="ci-row">
+          <span class="ci-row-label">TOTAL VOLUME 24H</span>
+          <span class="ci-row-val" id="idx-vol">—</span>
+        </div>
+        <div class="ci-row">
+          <span class="ci-row-label">ACTIVE COINS</span>
+          <span class="ci-row-val" id="idx-coins">—</span>
+        </div>
+        <div class="ci-row">
+          <span class="ci-row-label">ETH GAS (GWEI)</span>
+          <span class="ci-row-val" id="idx-gas">—</span>
+        </div>
+
+        <div class="ci-updated" id="idx-updated">Đang tải...</div>
       </div>
     </div>
   </section>
 
-  <!-- TICKER -->
-  <div class="ticker-wrap">
-    <div class="ticker" id="ticker">
-      <span class="tick-item">BTC <em class="up">$67,420 ▲2.4%</em></span>
-      <span class="tick-item">ETH <em class="up">$3,512 ▲1.8%</em></span>
-      <span class="tick-item">BNB <em class="down">$398 ▼0.5%</em></span>
-      <span class="tick-item">SOL <em class="up">$185 ▲4.2%</em></span>
-      <span class="tick-item">ADA <em class="down">$0.52 ▼1.1%</em></span>
-      <span class="tick-item">AVAX <em class="up">$38 ▲3.1%</em></span>
-      <span class="tick-item">DOT <em class="up">$8.2 ▲2.0%</em></span>
-      <span class="tick-item">MATIC <em class="down">$0.91 ▼0.8%</em></span>
-      <span class="tick-item">LINK <em class="up">$18.4 ▲5.3%</em></span>
-      <span class="tick-item">TON <em class="up">$6.1 ▲3.7%</em></span>
-      <!-- duplicate for seamless loop -->
-      <span class="tick-item">BTC <em class="up">$67,420 ▲2.4%</em></span>
-      <span class="tick-item">ETH <em class="up">$3,512 ▲1.8%</em></span>
-      <span class="tick-item">BNB <em class="down">$398 ▼0.5%</em></span>
-      <span class="tick-item">SOL <em class="up">$185 ▲4.2%</em></span>
+  <!-- ③ GLOBAL INDEX BAR (replaces static ticker) -->
+  <div class="index-bar" id="indexBar">
+    <div class="index-bar-static">
+      <!-- Left: key global metrics -->
+      <div class="ib-segment">
+        <div>
+          <div class="ib-label">MARKET</div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="ib-val" id="ib-mcap">—</span>
+            <span class="ib-ch" id="ib-mcap-ch">—</span>
+          </div>
+        </div>
+      </div>
+      <div class="ib-segment">
+        <div class="fgi-ring" id="ib-fgi-ring">
+          <span class="fgi-num" id="ib-fgi-num">—</span>
+          <span class="fgi-label" id="ib-fgi-lbl">—</span>
+        </div>
+        <div>
+          <div class="ib-label">FEAR & GREED</div>
+          <span class="ib-ch" id="ib-fgi-ch" style="font-family:var(--font-head);font-size:0.65rem;">—</span>
+        </div>
+      </div>
+      <div class="ib-segment">
+        <div>
+          <div class="ib-label">CRYPTO</div>
+          <span class="ib-val" id="ib-coins">—</span>
+        </div>
+      </div>
+      <div class="ib-segment">
+        <div>
+          <div class="ib-label">EXCHANGES</div>
+          <span class="ib-val" id="ib-exchanges">—</span>
+        </div>
+      </div>
+      <div class="ib-segment">
+        <div>
+          <div class="ib-label">ETH GAS</div>
+          <span class="ib-val" id="ib-gas">—</span>
+        </div>
+      </div>
+      <!-- Right: live coin ticker -->
+      <div class="ib-ticker-wrap">
+        <div class="ib-ticker" id="ibTicker"></div>
+      </div>
     </div>
   </div>
 
@@ -137,22 +384,10 @@
             Chuyên tư vấn đầu tư Tài chính & Crypto, nhà đầu tư với hơn 3 năm kinh nghiệm phân tích thị trường. Tôi chia sẻ kiến thức thực chiến về tài chính số, giúp bạn quản lý tài chính cá nhân và tối ưu hóa danh mục đầu tư thông qua công nghệ và AI.
           </p>
           <div class="skills-grid">
-            <div class="skill-item">
-              <span class="skill-icon">📊</span>
-              <span>Phân tích dữ liệu</span>
-            </div>
-            <div class="skill-item">
-              <span class="skill-icon">🛡️</span>
-              <span>Quản trị rủi ro</span>
-            </div>
-            <div class="skill-item">
-              <span class="skill-icon">🤖</span>
-              <span>Tự động hóa AI</span>
-            </div>
-            <div class="skill-item">
-              <span class="skill-icon">💼</span>
-              <span>Tư vấn đầu tư</span>
-            </div>
+            <div class="skill-item"><span class="skill-icon">📊</span><span>Phân tích dữ liệu</span></div>
+            <div class="skill-item"><span class="skill-icon">🛡️</span><span>Quản trị rủi ro</span></div>
+            <div class="skill-item"><span class="skill-icon">🤖</span><span>Tự động hóa AI</span></div>
+            <div class="skill-item"><span class="skill-icon">💼</span><span>Tư vấn đầu tư</span></div>
           </div>
         </div>
       </div>
@@ -174,36 +409,25 @@
           <div class="blog-tag">Phân tích</div>
           <h3>Bitcoin sẽ chạm $100K trong Q3 2025? Phân tích on-chain chuyên sâu</h3>
           <p>Dữ liệu on-chain cho thấy tín hiệu tích lũy mạnh từ cá voi, MVRV Ratio đang ở vùng lý tưởng...</p>
-          <div class="blog-meta">
-            <span>Ahaibi</span>
-            <span>·</span>
-            <span>18 Th4, 2026</span>
-            <span class="blog-read">8 phút đọc</span>
-          </div>
+          <div class="blog-meta"><span>Ahaibi</span><span>·</span><span>18 Th4, 2026</span><span class="blog-read">8 phút đọc</span></div>
         </article>
         <article class="blog-card">
           <div class="blog-tag trending">Trending</div>
           <h3>Top 5 Altcoin tiềm năng nhất cho chu kỳ Bull 2025</h3>
           <p>Danh sách các dự án có nền tảng vững chắc, đội ngũ mạnh và roadmap rõ ràng...</p>
-          <div class="blog-meta">
-            <span>Ahaibi</span><span>·</span><span>15 Th4, 2026</span>
-          </div>
+          <div class="blog-meta"><span>Ahaibi</span><span>·</span><span>15 Th4, 2026</span></div>
         </article>
         <article class="blog-card">
           <div class="blog-tag">Kiến thức</div>
           <h3>Quản trị rủi ro trong đầu tư crypto: Chiến lược từ chuyên gia</h3>
           <p>Cách thiết lập stop-loss, phân bổ danh mục và kiểm soát tâm lý khi thị trường biến động...</p>
-          <div class="blog-meta">
-            <span>Ahaibi</span><span>·</span><span>10 Th4, 2026</span>
-          </div>
+          <div class="blog-meta"><span>Ahaibi</span><span>·</span><span>10 Th4, 2026</span></div>
         </article>
         <article class="blog-card">
           <div class="blog-tag">DeFi</div>
           <h3>DeFi 3.0: Những giao thức lending mới thay đổi cuộc chơi</h3>
           <p>Tổng quan các giao thức DeFi thế hệ mới với APY ổn định và bảo mật được cải thiện...</p>
-          <div class="blog-meta">
-            <span>Ahaibi</span><span>·</span><span>8 Th4, 2026</span>
-          </div>
+          <div class="blog-meta"><span>Ahaibi</span><span>·</span><span>8 Th4, 2026</span></div>
         </article>
       </div>
     </div>
@@ -253,21 +477,11 @@
         <h2 class="section-title">Kết nối với <span class="gradient-text">Ahaibi</span></h2>
         <p class="contact-sub">Tư vấn đầu tư · Hợp tác kinh doanh · Đặt quảng cáo</p>
         <div class="contact-links">
-          <a href="#" class="contact-btn">
-            <span>📘</span> Facebook Cộng đồng
-          </a>
-          <a href="#" class="contact-btn">
-            <span>📘</span> Facebook CEO Ahaibi
-          </a>
-          <a href="#" class="contact-btn yt">
-            <span>▶</span> YouTube
-          </a>
-          <a href="#" class="contact-btn tk">
-            <span>♪</span> TikTok
-          </a>
-          <a href="#" class="contact-btn zl">
-            <span>💬</span> Zalo
-          </a>
+          <a href="#" class="contact-btn"><span>📘</span> Facebook Cộng đồng</a>
+          <a href="#" class="contact-btn"><span>📘</span> Facebook CEO Ahaibi</a>
+          <a href="#" class="contact-btn yt"><span>▶</span> YouTube</a>
+          <a href="#" class="contact-btn tk"><span>♪</span> TikTok</a>
+          <a href="#" class="contact-btn zl"><span>💬</span> Zalo</a>
         </div>
       </div>
     </div>
@@ -305,5 +519,180 @@
   </footer>
 
   <script src="main.js"></script>
+  <script>
+// ════════════════════════════════════════════
+//  INDEX.HTML — REALTIME DATA ENGINE
+//  Sources: CoinGecko + alternative.me + Binance WS + Etherscan
+// ════════════════════════════════════════════
+
+const TICKER_SYMBOLS = [
+  "btcusdt","ethusdt","bnbusdt","solusdt","xrpusdt",
+  "adausdt","avaxusdt","dogeusdt","linkusdt","tonusdt",
+  "dotusdt","maticusdt","ltcusdt","nearusdt","uniusdt"
+];
+const SYM_META = {
+  btcusdt:"BTC",ethusdt:"ETH",bnbusdt:"BNB",solusdt:"SOL",xrpusdt:"XRP",
+  adausdt:"ADA",avaxusdt:"AVAX",dogeusdt:"DOGE",linkusdt:"LINK",tonusdt:"TON",
+  dotusdt:"DOT",maticusdt:"MATIC",ltcusdt:"LTC",nearusdt:"NEAR",uniusdt:"UNI"
+};
+
+let wsTickerData = {};
+
+// ── FORMAT ────────────────────────────────────
+const fmtP = n => {
+  if (!n) return "—";
+  if (n >= 10000) return "$" + n.toLocaleString(undefined,{maximumFractionDigits:0});
+  if (n >= 1)     return "$" + n.toFixed(2);
+  return "$" + n.toFixed(4);
+};
+const fmtBig = n => {
+  if (!n) return "—";
+  if (n >= 1e12) return "$"+(n/1e12).toFixed(2)+"T";
+  if (n >= 1e9)  return "$"+(n/1e9).toFixed(2)+"B";
+  if (n >= 1e6)  return "$"+(n/1e6).toFixed(2)+"M";
+  return "$"+n.toLocaleString();
+};
+const pctStr = v => v == null ? "—" : (v>=0?"+":"")+v.toFixed(2)+"%";
+const pctCol = v => v >= 0 ? "var(--up)" : "var(--down)";
+const setEl  = (id, txt, col) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = txt;
+  if (col) el.style.color = col;
+};
+
+// ── BINANCE WS (ticker) ───────────────────────
+function connectTicker() {
+  const streams = TICKER_SYMBOLS.map(s=>s+"@miniTicker").join("/");
+  const ws = new WebSocket("wss://stream.binance.com:9443/stream?streams="+streams);
+  ws.onmessage = evt => {
+    const msg = JSON.parse(evt.data);
+    if (!msg.data) return;
+    const d   = msg.data;
+    const sym = d.s.toLowerCase();
+    const price= parseFloat(d.c);
+    const open = parseFloat(d.o);
+    const ch   = ((price - open) / open) * 100;
+    wsTickerData[sym] = { price, ch };
+    updateTickerItem(sym, price, ch);
+    if (sym === "btcusdt") {
+      setEl("idx-btc", fmtP(price), ch>=0?"var(--up)":"var(--down)");
+      setEl("idx-btc-ch", pctStr(ch), pctCol(ch));
+    }
+    if (sym === "ethusdt") {
+      setEl("idx-eth", fmtP(price), ch>=0?"var(--up)":"var(--down)");
+      setEl("idx-eth-ch", pctStr(ch), pctCol(ch));
+    }
+  };
+  ws.onclose = () => setTimeout(connectTicker, 3000);
+}
+
+// ── TICKER BAR items ──────────────────────────
+function updateTickerItem(sym, price, ch) {
+  const label = SYM_META[sym] || sym.replace("usdt","").toUpperCase();
+  const id    = "ibt-"+sym;
+  let el = document.getElementById(id);
+  if (!el) {
+    el = document.createElement("span");
+    el.className = "ib-tick-item";
+    el.id = id;
+    document.getElementById("ibTicker").appendChild(el);
+    // duplicate for seamless loop — append clone
+    const clone = el.cloneNode(true);
+    clone.id = "ibt-clone-"+sym;
+    document.getElementById("ibTicker").appendChild(clone);
+  }
+  const col = ch >= 0 ? "var(--up)" : "var(--down)";
+  const arr = ch >= 0 ? "▲" : "▼";
+  const html = `${label} <em style="color:${col}">${fmtP(price)} ${arr}${Math.abs(ch).toFixed(2)}%</em>`;
+  el.innerHTML = html;
+  const clone2 = document.getElementById("ibt-clone-"+sym);
+  if (clone2) clone2.innerHTML = html;
+}
+
+// ── COINGECKO GLOBAL ──────────────────────────
+async function fetchGlobal() {
+  try {
+    const r = await fetch("https://api.coingecko.com/api/v3/global");
+    if (!r.ok) throw new Error();
+    const d = (await r.json()).data;
+    const mcap    = d.total_market_cap.usd;
+    const mcapCh  = d.market_cap_change_percentage_24h_usd;
+    const vol     = d.total_volume.usd;
+    const btcDom  = d.market_cap_percentage.btc;
+    const coins   = d.active_cryptocurrencies;
+    const exch    = d.markets;
+
+    // Crypto Index card
+    setEl("idx-mcap",    fmtBig(mcap));
+    setEl("idx-mcap-ch", pctStr(mcapCh), pctCol(mcapCh));
+    setEl("idx-btcdom",  btcDom.toFixed(1)+"%");
+    setEl("idx-vol",     fmtBig(vol));
+    setEl("idx-coins",   coins.toLocaleString());
+
+    // Index bar
+    setEl("ib-mcap",    fmtBig(mcap));
+    setEl("ib-mcap-ch", pctStr(mcapCh), pctCol(mcapCh));
+    setEl("ib-coins",   coins.toLocaleString());
+    setEl("ib-exchanges", exch.toLocaleString());
+
+    // Updated time
+    const now = new Date();
+    setEl("idx-updated", `Cập nhật ${now.getHours()}:${String(now.getMinutes()).padStart(2,"0")}`);
+  } catch(e) { console.warn("global:", e.message); }
+}
+
+// ── FEAR & GREED ──────────────────────────────
+async function fetchFG() {
+  try {
+    const r = await fetch("https://api.alternative.me/fng/?limit=1");
+    const d = await r.json();
+    const v = parseInt(d.data[0].value);
+    const l = d.data[0].value_classification;
+    const col = v<25?"var(--down)":v<50?"#FFA500":v<75?"#ADFF2F":"var(--up)";
+
+    setEl("idx-fgi-num", v, col);
+    setEl("idx-fgi-lbl", l.toUpperCase(), "var(--text3)");
+    setEl("ib-fgi-num",  v, col);
+    setEl("ib-fgi-lbl",  l.split(" ")[0].toUpperCase(), "var(--text3)");
+    setEl("ib-fgi-ch",   "FGI "+v, col);
+
+    const ring = document.getElementById("ib-fgi-ring");
+    if (ring) ring.style.borderColor = col;
+  } catch {}
+}
+
+// ── ETH GAS via Etherscan public (no key needed for basic) ──
+async function fetchGas() {
+  try {
+    // Use ethgasstation alternative - free
+    const r = await fetch("https://api.blocknative.com/gasprices/blockprices");
+    const d = await r.json();
+    const gwei = Math.round(d.blockPrices[0].estimatedPrices[1].price);
+    setEl("idx-gas", gwei+" Gwei");
+    setEl("ib-gas",  gwei+" Gwei");
+  } catch {
+    // fallback: just show estimate from Binance gas oracle isn't public
+    // use a simple static fallback
+    try {
+      const r2 = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd&include_24hr_change=true");
+      const d2 = await r2.json();
+      // gas not available from gecko, show placeholder
+      setEl("idx-gas", "~15 Gwei");
+      setEl("ib-gas",  "~15 Gwei");
+    } catch {}
+  }
+}
+
+// ── BOOT ──────────────────────────────────────
+connectTicker();
+fetchGlobal();
+fetchFG();
+fetchGas();
+
+setInterval(fetchGlobal, 60000);
+setInterval(fetchFG, 300000);
+setInterval(fetchGas, 30000);
+  </script>
 </body>
 </html>

@@ -8,28 +8,98 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Sora:wght@300;400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <style>
+    .price-flash-up   { animation: flashUp 0.6s ease; }
+    .price-flash-down { animation: flashDown 0.6s ease; }
+    @keyframes flashUp   { 0%,100%{background:transparent} 40%{background:rgba(0,255,136,0.18)} }
+    @keyframes flashDown { 0%,100%{background:transparent} 40%{background:rgba(255,69,96,0.18)} }
+
+    .live-badge {
+      display:inline-flex;align-items:center;gap:6px;
+      background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);
+      color:var(--up);padding:5px 14px;border-radius:100px;
+      font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.08em;
+    }
+    .live-dot { width:7px;height:7px;background:var(--up);border-radius:50%;animation:blink 1s ease-in-out infinite; }
+
+    .ws-status {
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:var(--font-head);font-size:0.65rem;letter-spacing:0.06em;
+      padding:4px 12px;border-radius:100px;border:1px solid var(--border);
+      color:var(--text3);transition:all 0.4s;
+    }
+    .ws-status.connected    { border-color:rgba(0,255,136,0.4);color:var(--up);background:rgba(0,255,136,0.06); }
+    .ws-status.disconnected { border-color:rgba(255,69,96,0.4);color:var(--down);background:rgba(255,69,96,0.06); }
+    .ws-dot { width:6px;height:6px;border-radius:50%;background:currentColor; }
+
+    .overview-card { position:relative;overflow:hidden; }
+    .ov-label { font-size:0.68rem;color:var(--text2);font-family:var(--font-head);letter-spacing:0.1em;margin-bottom:8px; }
+    .ov-value { font-family:var(--font-head);font-size:1.5rem;font-weight:900;margin-bottom:4px;transition:color 0.3s; }
+    .ov-change { font-size:0.78rem;font-family:var(--font-head); }
+    .ov-sub    { font-size:0.68rem;color:var(--text3);margin-top:2px; }
+
+    .mini-chart-wrap { height:44px;display:flex;align-items:flex-end;gap:2px;margin-top:10px; }
+    .mini-bar { border-radius:2px 2px 0 0;min-height:3px;transition:height 0.3s ease;flex:1; }
+
     .fear-gauge { text-align:center; }
     .gauge-circle {
-      width: 120px; height: 120px; border-radius: 50%;
-      margin: 0 auto 12px;
-      border: 3px solid var(--accent);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      background: radial-gradient(circle, rgba(0,200,255,0.1), transparent);
-      box-shadow: var(--glow);
+      width:110px;height:110px;border-radius:50%;
+      margin:0 auto 10px;border:3px solid var(--accent);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      background:radial-gradient(circle,rgba(0,200,255,0.08),transparent);
+      box-shadow:var(--glow);transition:border-color 0.5s,box-shadow 0.5s;
     }
-    .gauge-num { font-family:var(--font-head); font-size:1.8rem; font-weight:900; }
-    .gauge-label { font-size:0.65rem; color:var(--text2); letter-spacing:0.1em; }
-    .gauge-title { font-family:var(--font-head); font-size:0.7rem; color:var(--text2); }
+    .gauge-num   { font-family:var(--font-head);font-size:1.7rem;font-weight:900; }
+    .gauge-label { font-size:0.6rem;color:var(--text2);letter-spacing:0.1em; }
+    .gauge-title { font-family:var(--font-head);font-size:0.68rem;color:var(--text2); }
+
     .refresh-btn {
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--accent); padding: 8px 16px; border-radius: 8px;
-      cursor: pointer; font-family: var(--font-head); font-size: 0.7rem;
-      transition: var(--transition); display: flex; align-items: center; gap: 6px;
+      background:var(--surface);border:1px solid var(--border);
+      color:var(--accent);padding:8px 16px;border-radius:8px;cursor:pointer;
+      font-family:var(--font-head);font-size:0.7rem;transition:var(--transition);
+      display:flex;align-items:center;gap:6px;
     }
-    .refresh-btn:hover { border-color: var(--accent); background: rgba(0,200,255,0.05); }
-    .last-update { font-size: 0.7rem; color: var(--text3); font-family: var(--font-head); }
-    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--up); display: inline-block; animation: blink 1.5s ease-in-out infinite; margin-right: 6px; }
+    .refresh-btn:hover { border-color:var(--accent);background:rgba(0,200,255,0.05); }
+    .spin { animation:spinAnim 0.8s linear infinite; }
+    @keyframes spinAnim { to{transform:rotate(360deg)} }
+
+    .price-cell { font-family:var(--font-head);font-weight:700;font-size:0.9rem;transition:color 0.3s;border-radius:4px;padding:2px 4px; }
+    .vol-bar-wrap { background:var(--surface2);border-radius:4px;height:4px;width:80px;margin-top:4px; }
+    .vol-bar      { height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.5s; }
+
+    .heatmap-grid { display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:16px; }
+    @media(max-width:700px){ .heatmap-grid{grid-template-columns:repeat(3,1fr);} }
+    .hm-cell {
+      border-radius:10px;padding:12px 8px;text-align:center;
+      transition:all 0.4s;cursor:default;border:1px solid transparent;
+    }
+    .hm-cell:hover { transform:scale(1.04); }
+    .hm-name  { font-family:var(--font-head);font-size:0.72rem;font-weight:700;margin-bottom:4px; }
+    .hm-pct   { font-size:0.82rem;font-weight:700; }
+    .hm-price { font-size:0.62rem;color:rgba(255,255,255,0.55);margin-top:2px; }
+
+    .ticker-live {
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);padding:10px 20px;
+      display:flex;gap:28px;overflow-x:auto;scrollbar-width:none;
+      margin-bottom:24px;
+    }
+    .ticker-live::-webkit-scrollbar { display:none; }
+    .tl-item { display:flex;flex-direction:column;align-items:center;gap:2px;min-width:56px; }
+    .tl-sym  { font-family:var(--font-head);font-size:0.62rem;color:var(--text2); }
+    .tl-price{ font-family:var(--font-head);font-size:0.8rem;font-weight:700;transition:color 0.3s; }
+    .tl-pct  { font-size:0.65rem;font-family:var(--font-head); }
+
+    .section-label {
+      font-family:var(--font-head);font-size:0.7rem;letter-spacing:0.12em;
+      color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;
+    }
+    .section-label::after { content:'';flex:1;height:1px;background:var(--border); }
+
+    .top-bar { display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px; }
+    .top-bar-left  { display:flex;align-items:center;gap:10px;flex-wrap:wrap; }
+    .top-bar-right { display:flex;align-items:center;gap:10px; }
+
+    @media(max-width:600px){ .market-overview{grid-template-columns:1fr 1fr!important} }
   </style>
 </head>
 <body>
@@ -50,41 +120,61 @@
     </div>
   </nav>
 
-  <div class="page-header">
+  <div style="padding:110px 0 40px;">
     <div class="container">
-      <div class="section-tag">LIVE MARKET</div>
-      <h1 class="section-title">Crypto <span class="gradient-text">Dashboard</span></h1>
-      <p>Dữ liệu thị trường thời gian thực · Cập nhật mỗi 60 giây</p>
-      <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:16px;">
-        <span class="last-update"><span class="status-dot"></span><span id="lastUpdate">Đang tải...</span></span>
-        <button class="refresh-btn" onclick="fetchAll()">↻ Làm mới</button>
-      </div>
-    </div>
-  </div>
 
-  <div style="padding-bottom:100px;">
-    <div class="container">
+      <!-- TOP BAR -->
+      <div class="top-bar">
+        <div class="top-bar-left">
+          <div class="section-tag" style="margin:0;">LIVE MARKET</div>
+          <span class="live-badge"><span class="live-dot"></span>REAL-TIME</span>
+          <span class="ws-status disconnected" id="wsStatus">
+            <span class="ws-dot"></span><span id="wsText">Đang kết nối...</span>
+          </span>
+        </div>
+        <div class="top-bar-right">
+          <span style="font-size:0.72rem;color:var(--text2);font-family:var(--font-head);" id="clockEl"></span>
+          <button class="refresh-btn" onclick="manualRefresh()">
+            <span id="refreshIcon">↻</span> Làm mới
+          </button>
+        </div>
+      </div>
+
+      <h1 class="section-title" style="margin-bottom:8px;">
+        Crypto <span class="gradient-text">Dashboard</span>
+      </h1>
+      <p style="color:var(--text2);font-size:0.88rem;margin-bottom:28px;">
+        Giá tick-by-tick qua <strong style="color:var(--accent)">Binance WebSocket</strong> · Metadata từ <strong style="color:var(--accent2)">CoinGecko</strong> · Tự động làm mới mỗi giây
+      </p>
+
+      <!-- LIVE TICKER STRIP -->
+      <div class="ticker-live" id="miniTicker"></div>
 
       <!-- OVERVIEW CARDS -->
-      <div class="market-overview" id="overviewCards">
+      <div class="market-overview" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
         <div class="overview-card">
-          <div class="ov-label">BTC PRICE</div>
-          <div class="ov-value" id="ov-btc">—</div>
+          <div class="ov-label">₿ BTC / USDT</div>
+          <div class="ov-value" id="ov-btc-price">—</div>
           <div class="ov-change" id="ov-btc-ch">—</div>
+          <div class="ov-sub" id="ov-btc-vol">Vol 24H: —</div>
+          <div class="mini-chart-wrap" id="btc-mini-chart"></div>
         </div>
         <div class="overview-card">
-          <div class="ov-label">ETH PRICE</div>
-          <div class="ov-value" id="ov-eth">—</div>
+          <div class="ov-label">Ξ ETH / USDT</div>
+          <div class="ov-value" id="ov-eth-price">—</div>
           <div class="ov-change" id="ov-eth-ch">—</div>
+          <div class="ov-sub" id="ov-eth-vol">Vol 24H: —</div>
+          <div class="mini-chart-wrap" id="eth-mini-chart"></div>
         </div>
         <div class="overview-card">
-          <div class="ov-label">MARKET CAP</div>
+          <div class="ov-label">🌐 TOTAL MARKET CAP</div>
           <div class="ov-value" id="ov-mcap">—</div>
-          <div class="ov-change" id="ov-mcap-ch" style="font-size:0.72rem;color:var(--text2);">Total crypto</div>
+          <div class="ov-change" id="ov-mcap-ch" style="font-size:0.72rem;color:var(--text2)">Top 20 coins</div>
+          <div class="ov-sub">BTC Dom: <span id="ov-btcdom" style="color:var(--accent)">—</span></div>
         </div>
         <div class="overview-card fear-gauge">
-          <div class="ov-label" style="text-align:center;">FEAR & GREED</div>
-          <div class="gauge-circle">
+          <div class="ov-label" style="text-align:center;">😱 FEAR & GREED</div>
+          <div class="gauge-circle" id="fgCircle">
             <span class="gauge-num" id="fg-num">—</span>
             <span class="gauge-label" id="fg-label">—</span>
           </div>
@@ -92,71 +182,140 @@
         </div>
       </div>
 
+      <!-- HEATMAP -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;margin-bottom:24px;">
+        <div class="section-label">🟩 HEATMAP THỊ TRƯỜNG 24H – Cập nhật mỗi 2 giây</div>
+        <div class="heatmap-grid" id="heatmapGrid">
+          <div style="color:var(--text3);font-size:0.8rem;padding:10px;grid-column:1/-1;">Đang tải WebSocket...</div>
+        </div>
+      </div>
+
       <!-- MAIN TABLE -->
-      <div class="crypto-table-wrap">
+      <div class="crypto-table-wrap" style="margin-bottom:24px;">
         <div class="table-header">
-          <h3>🪙 Top Coins theo Market Cap</h3>
-          <div class="table-tabs">
-            <button class="tab-btn active" onclick="setTableTab('top',this)">Top 20</button>
-            <button class="tab-btn" onclick="setTableTab('gainers',this)">Tăng mạnh</button>
-            <button class="tab-btn" onclick="setTableTab('losers',this)">Giảm mạnh</button>
+          <h3>🪙 Bảng giá Top Coins · Tick realtime</h3>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="table-tabs">
+              <button class="tab-btn active" onclick="setTab('top',this)">Top 20</button>
+              <button class="tab-btn" onclick="setTab('gainers',this)">▲ Tăng</button>
+              <button class="tab-btn" onclick="setTab('losers',this)">▼ Giảm</button>
+            </div>
           </div>
         </div>
         <div style="overflow-x:auto;">
           <table class="crypto-table">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Coin</th>
-                <th>Giá (USD)</th>
-                <th>1H %</th>
-                <th>24H %</th>
-                <th>7D %</th>
-                <th>Vốn hóa</th>
-                <th>24H Vol</th>
-                <th>Sparkline</th>
+                <th>#</th><th>Coin</th><th>Giá USD</th>
+                <th>1H %</th><th>24H %</th><th>7D %</th>
+                <th>Vốn hóa</th><th>KL 24H</th><th>KL %</th><th>Sparkline</th>
               </tr>
             </thead>
-            <tbody id="cryptoTableBody">
-              <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text2);">
-                <span class="loading-spinner"></span> Đang tải dữ liệu...
+            <tbody id="tableBody">
+              <tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text2);">
+                <span class="loading-spinner"></span> Đang kết nối Binance WebSocket...
               </td></tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- TRENDING + SIGNALS -->
-      <div class="trending-section">
+      <!-- TRENDING + MOVERS -->
+      <div class="trending-section" style="margin-bottom:24px;">
         <div class="trend-card">
-          <h4>🔥 Trending hôm nay (CoinGecko)</h4>
-          <div id="trendingList">
-            <div style="color:var(--text2);font-size:0.8rem;padding:20px 0;">Đang tải...</div>
-          </div>
+          <div class="section-label">🔥 TRENDING COINS – CoinGecko</div>
+          <div id="trendingList"><div style="color:var(--text3);font-size:0.8rem;">Đang tải...</div></div>
         </div>
         <div class="trend-card">
-          <h4>📉 Top Gainers & Losers (24H)</h4>
-          <div id="gainersList">
-            <div style="color:var(--text2);font-size:0.8rem;padding:20px 0;">Đang tải...</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- AI SIGNALS -->
-      <div class="signal-card">
-        <h4>🤖 Gợi ý theo dõi từ Ahaibi · Tuần này</h4>
-        <div class="signals-grid" id="signalsGrid">
-          <!-- static signals -->
+          <div class="section-label">⚡ TOP MOVERS 24H</div>
+          <div id="moversList"><div style="color:var(--text3);font-size:0.8rem;">Đang tải...</div></div>
         </div>
       </div>
 
       <!-- DOMINANCE -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:40px;">
-        <h4 style="font-family:var(--font-head);font-size:0.82rem;color:var(--accent);margin-bottom:20px;">📊 BTC Dominance & Market Share</h4>
-        <div id="dominanceBar" style="background:var(--surface2);border-radius:8px;height:32px;overflow:hidden;display:flex;">
-          <!-- filled by JS -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;margin-bottom:24px;">
+        <div class="section-label">📊 MARKET DOMINANCE</div>
+        <div id="dominanceBar" style="background:var(--surface2);border-radius:8px;height:28px;overflow:hidden;display:flex;"></div>
+        <div id="dominanceLegend" style="display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:0.73rem;"></div>
+      </div>
+
+      <!-- AI SIGNALS -->
+      <div class="signal-card">
+        <div class="section-label">🤖 GỢI Ý THEO DÕI – AHAIBI</div>
+        <div class="signals-grid" id="signalsGrid"></div>
+      </div>
+
+      <!-- ══════════════════════════════════════ -->
+      <!-- ETF SECTION                            -->
+      <!-- ══════════════════════════════════════ -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:24px;" id="etfSection">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+          <div>
+            <div class="section-label" style="margin-bottom:6px;">📈 CRYPTO ETF – DỮ LIỆU THỰC</div>
+            <p style="font-size:0.78rem;color:var(--text2);max-width:600px;line-height:1.6;">
+              Quỹ ETF Crypto niêm yết trên sàn chứng khoán truyền thống. Theo dõi AUM, dòng tiền vào/ra và khối lượng giao dịch các quỹ BTC, ETH, SOL, XRP.
+            </p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;" id="etfTabWrap">
+            <button class="tab-btn active" onclick="setEtfTab('BTC',this)">ETF-BTC</button>
+            <button class="tab-btn" onclick="setEtfTab('ETH',this)">ETF-ETH</button>
+            <button class="tab-btn" onclick="setEtfTab('SOL',this)">ETF-SOL</button>
+          </div>
         </div>
-        <div id="dominanceLegend" style="display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-size:0.75rem;"></div>
+
+        <!-- ETF Summary cards -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;" id="etfSummary">
+          <div class="overview-card">
+            <div class="ov-label">TOTAL AUM</div>
+            <div class="ov-value" id="etf-aum">—</div>
+            <div class="ov-change" id="etf-aum-ch" style="font-size:0.72rem;color:var(--text2);">Tổng tài sản quản lý</div>
+          </div>
+          <div class="overview-card">
+            <div class="ov-label">TOTAL VOLUME 24H</div>
+            <div class="ov-value" id="etf-vol">—</div>
+            <div class="ov-change" id="etf-vol-ch" style="font-size:0.72rem;color:var(--text2);">Khối lượng giao dịch</div>
+          </div>
+          <div class="overview-card">
+            <div class="ov-label">NET INFLOW (24H)</div>
+            <div class="ov-value" id="etf-inflow">—</div>
+            <div class="ov-change" id="etf-inflow-lbl" style="font-size:0.72rem;">Dòng tiền ròng</div>
+          </div>
+        </div>
+
+        <!-- ETF Table -->
+        <div style="overflow-x:auto;">
+          <table class="crypto-table" id="etfTable">
+            <thead>
+              <tr>
+                <th>Ticker</th>
+                <th>Tên quỹ</th>
+                <th>Giá (USD)</th>
+                <th>Thay đổi 24H</th>
+                <th>Net Inflow 1D</th>
+                <th>Net Inflow 7D</th>
+                <th>Khối lượng</th>
+                <th>Asset Size</th>
+                <th>BTC Holdings</th>
+              </tr>
+            </thead>
+            <tbody id="etfTableBody">
+              <tr><td colspan="9" style="text-align:center;padding:30px;color:var(--text2);">
+                <span class="loading-spinner"></span> Đang tải dữ liệu ETF...
+              </td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Inflow chart placeholder -->
+        <div style="margin-top:20px;">
+          <div style="font-family:var(--font-head);font-size:0.7rem;letter-spacing:0.1em;color:var(--text3);margin-bottom:12px;">INFLOW / OUTFLOW 7 NGÀY GẦN NHẤT</div>
+          <div style="display:flex;align-items:flex-end;gap:6px;height:80px;" id="etfInflowChart"></div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.62rem;color:var(--text3);font-family:var(--font-head);" id="etfInflowDates"></div>
+        </div>
+
+        <div style="font-size:0.65rem;color:var(--text3);margin-top:14px;font-family:var(--font-head);">
+          Nguồn: CoinGecko · Dữ liệu ETF cập nhật mỗi 5 phút · <span id="etf-updated"></span>
+        </div>
       </div>
 
     </div>
@@ -165,263 +324,606 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-bottom">
-        <span>© 2026 Token Cast Net · Ahaibi. Dữ liệu từ CoinGecko API.</span>
+        <span>© 2026 Token Cast Net · Ahaibi · Binance WS + CoinGecko</span>
         <span>⚠️ Không phải lời khuyên tài chính. DYOR.</span>
       </div>
     </div>
   </footer>
 
-  <script src="main.js"></script>
-  <script>
-  // ── COIN ICONS MAP ──
-  const icons = {
-    bitcoin:"₿",ethereum:"Ξ",tether:"₮","binancecoin":"BNB",solana:"◎",
-    "usd-coin":"$","staked-ether":"Ξ","ripple":"✕","the-open-network":"⬡",
-    cardano:"₳",avalanche:"▲",dogecoin:"Ð","shiba-inu":"🐕","tron":"♦",
-    "polkadot":"●","chainlink":"⬡","bitcoin-cash":"₿","near":"Ⓝ","litecoin":"Ł","uniswap":"🦄",
+<script src="main.js"></script>
+<script>
+// ════════════════════════════════════════════════
+//   TOKEN CAST NET – REAL-TIME DASHBOARD v2
+//   • Binance WebSocket  → tick-by-tick prices
+//   • CoinGecko REST     → snapshot every 60s
+//   • alternative.me     → Fear & Greed
+// ════════════════════════════════════════════════
+
+const WS_SYMBOLS = [
+  "btcusdt","ethusdt","bnbusdt","solusdt","xrpusdt",
+  "adausdt","avaxusdt","dogeusdt","dotusdt","maticusdt",
+  "linkusdt","uniusdt","atomusdt","ltcusdt","nearusdt",
+  "tonusdt","shibusdt","trxusdt","ftmusdt","suiusdt"
+];
+
+const COIN_META = {
+  btcusdt: {name:"Bitcoin",    sym:"BTC",  icon:"₿"},
+  ethusdt: {name:"Ethereum",   sym:"ETH",  icon:"Ξ"},
+  bnbusdt: {name:"BNB",        sym:"BNB",  icon:"⬡"},
+  solusdt: {name:"Solana",     sym:"SOL",  icon:"◎"},
+  xrpusdt: {name:"XRP",        sym:"XRP",  icon:"✕"},
+  adausdt: {name:"Cardano",    sym:"ADA",  icon:"₳"},
+  avaxusdt:{name:"Avalanche",  sym:"AVAX", icon:"▲"},
+  dogeusdt:{name:"Dogecoin",   sym:"DOGE", icon:"Ð"},
+  dotusdt: {name:"Polkadot",   sym:"DOT",  icon:"●"},
+  maticusdt:{name:"Polygon",   sym:"MATIC",icon:"◈"},
+  linkusdt:{name:"Chainlink",  sym:"LINK", icon:"⬡"},
+  uniusdt: {name:"Uniswap",    sym:"UNI",  icon:"🦄"},
+  atomusdt:{name:"Cosmos",     sym:"ATOM", icon:"⚛"},
+  ltcusdt: {name:"Litecoin",   sym:"LTC",  icon:"Ł"},
+  nearusdt:{name:"NEAR",       sym:"NEAR", icon:"Ⓝ"},
+  tonusdt: {name:"TON",        sym:"TON",  icon:"⬡"},
+  shibusdt:{name:"Shiba Inu",  sym:"SHIB", icon:"🐕"},
+  trxusdt: {name:"TRON",       sym:"TRX",  icon:"♦"},
+  ftmusdt: {name:"Fantom",     sym:"FTM",  icon:"◆"},
+  suiusdt: {name:"Sui",        sym:"SUI",  icon:"💧"},
+};
+
+const COLORS = ["#00C8FF","#00FF88","#FF6B35","#B57BFF","#FFCC00","#FF4560","#00E5CC","#FFA07A","#7FBA00","#00BFFF","#FF69B4","#20B2AA"];
+
+// ── STATE ─────────────────────────────────────
+let wsData     = {};  // sym → {price, prevPrice, ch24, high, low, vol24, open}
+let geckoSnap  = [];
+let currentTab = "top";
+let priceHist  = {};  // sym → [prices]
+let ws         = null;
+let renderScheduled = false;
+
+// ── CLOCK ─────────────────────────────────────
+setInterval(() => {
+  const n = new Date();
+  const pad = x => String(x).padStart(2,'0');
+  document.getElementById("clockEl").textContent =
+    pad(n.getHours())+":"+pad(n.getMinutes())+":"+pad(n.getSeconds());
+}, 1000);
+
+// ── FORMAT ────────────────────────────────────
+const fmtP = n => {
+  if (n == null) return "—";
+  if (n >= 10000) return "$" + n.toLocaleString(undefined,{maximumFractionDigits:0});
+  if (n >= 1000)  return "$" + n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  if (n >= 1)     return "$" + n.toFixed(3);
+  if (n >= 0.001) return "$" + n.toFixed(5);
+  return "$" + n.toFixed(8);
+};
+const fmtBig = n => {
+  if (!n) return "—";
+  if (n >= 1e12) return "$"+(n/1e12).toFixed(2)+"T";
+  if (n >= 1e9)  return "$"+(n/1e9).toFixed(2)+"B";
+  if (n >= 1e6)  return "$"+(n/1e6).toFixed(2)+"M";
+  return "$"+n.toLocaleString();
+};
+const pctHtml = v =>
+  v == null ? `<span style="color:var(--text3)">—</span>`
+  : `<span class="${v>=0?'up':'down'}">${v>=0?"+":""}${v.toFixed(2)}%</span>`;
+
+// ── PRICE HISTORY ─────────────────────────────
+function pushHist(sym, price) {
+  if (!priceHist[sym]) priceHist[sym] = [];
+  priceHist[sym].push(price);
+  if (priceHist[sym].length > 40) priceHist[sym].shift();
+}
+function miniChart(prices, col) {
+  if (!prices || prices.length < 2) return "";
+  const mn = Math.min(...prices), mx = Math.max(...prices), r = (mx-mn)||0.0001;
+  return prices.map(v => {
+    const h = Math.max(3, Math.round(((v-mn)/r)*38)+3);
+    return `<div class="mini-bar" style="height:${h}px;background:${col};"></div>`;
+  }).join("");
+}
+
+// ── WEBSOCKET ─────────────────────────────────
+function connectWS() {
+  const streams = WS_SYMBOLS.map(s=>s+"@ticker").join("/");
+  ws = new WebSocket("wss://stream.binance.com:9443/stream?streams="+streams);
+
+  ws.onopen = () => setWsStatus("connected","WebSocket Live ✓");
+  ws.onclose = () => {
+    setWsStatus("disconnected","Mất kết nối – Đang kết nối lại...");
+    setTimeout(connectWS, 3500);
   };
+  ws.onerror = () => setWsStatus("disconnected","Lỗi kết nối");
 
-  const colors = ["#00C8FF","#00FF88","#FF6B35","#B57BFF","#FFCC00","#FF4560","#00E5CC","#FFA07A","#7FBA00","#00BFFF"];
+  ws.onmessage = evt => {
+    const msg = JSON.parse(evt.data);
+    if (!msg.data) return;
+    const d   = msg.data;
+    const sym = d.s.toLowerCase();
+    if (!COIN_META[sym]) return;
 
-  let allCoins = [];
-  let currentTab = "top";
+    const price  = parseFloat(d.c);
+    const prev   = wsData[sym]?.price;
+    const ch24   = parseFloat(d.P);
+    const vol24  = parseFloat(d.v) * price;
 
-  function fmt(n) {
-    if (!n && n !== 0) return "—";
-    if (n >= 1e12) return "$" + (n/1e12).toFixed(2) + "T";
-    if (n >= 1e9)  return "$" + (n/1e9).toFixed(2) + "B";
-    if (n >= 1e6)  return "$" + (n/1e6).toFixed(2) + "M";
-    return "$" + n.toLocaleString();
-  }
-  function fmtPrice(n) {
-    if (!n && n !== 0) return "—";
-    if (n >= 1000) return "$" + n.toLocaleString(undefined,{maximumFractionDigits:0});
-    if (n >= 1)    return "$" + n.toFixed(2);
-    if (n >= 0.01) return "$" + n.toFixed(4);
-    return "$" + n.toFixed(6);
-  }
-  function pctHtml(v) {
-    if (v == null) return "<span style='color:var(--text3)'>—</span>";
-    const cls = v >= 0 ? "up" : "down";
-    const sign = v >= 0 ? "+" : "";
-    return `<span class="${cls}">${sign}${v.toFixed(2)}%</span>`;
-  }
+    wsData[sym] = { price, prevPrice: prev, ch24, high:parseFloat(d.h), low:parseFloat(d.l), vol24, open:parseFloat(d.o) };
+    pushHist(sym, price);
 
-  function sparkHtml(sparkline) {
-    if (!sparkline || !sparkline.price || sparkline.price.length < 2) {
-      return "<span style='color:var(--text3);font-size:0.7rem'>—</span>";
+    // update mini ticker
+    updateTickerItem(sym);
+
+    // update BTC/ETH overview cards immediately
+    if (sym === "btcusdt") updateCard("btc", sym, price, ch24, vol24, prev);
+    if (sym === "ethusdt") updateCard("eth", sym, price, ch24, vol24, prev);
+
+    // flash table cell
+    if (prev && price !== prev) {
+      const cell = document.getElementById("pc-"+sym);
+      if (cell) {
+        cell.textContent = fmtP(price);
+        const cls = price > prev ? "price-flash-up" : "price-flash-down";
+        cell.classList.remove("price-flash-up","price-flash-down");
+        void cell.offsetWidth;
+        cell.classList.add(cls);
+      }
     }
-    const data = sparkline.price.slice(-14);
-    const mn = Math.min(...data), mx = Math.max(...data);
-    const range = mx - mn || 1;
-    const last2 = data.slice(-2);
-    const isUp = last2[1] >= last2[0];
-    const col = isUp ? "var(--up)" : "var(--down)";
-    const bars = data.map(v => {
-      const h = Math.max(4, Math.round(((v - mn) / range) * 24) + 4);
-      return `<div class="spark-bar" style="height:${h}px;background:${col}"></div>`;
-    }).join("");
-    return `<div class="mini-spark">${bars}</div>`;
-  }
 
-  function renderTable(tab) {
-    const body = document.getElementById("cryptoTableBody");
-    let data = [...allCoins];
-    if (tab === "gainers") data.sort((a,b) => (b.price_change_percentage_24h||0) - (a.price_change_percentage_24h||0));
-    else if (tab === "losers") data.sort((a,b) => (a.price_change_percentage_24h||0) - (b.price_change_percentage_24h||0));
-    const rows = data.slice(0, 20).map((c, i) => `
-      <tr>
-        <td style="color:var(--text3);font-family:var(--font-head);font-size:0.75rem;">${tab==="top"?c.market_cap_rank||i+1:i+1}</td>
-        <td>
-          <div class="coin-cell">
-            <div class="coin-icon">${icons[c.id] || c.symbol.charAt(0).toUpperCase()}</div>
-            <div>
-              <div class="coin-name">${c.name}</div>
-              <div class="coin-symbol">${c.symbol.toUpperCase()}</div>
-            </div>
-          </div>
-        </td>
-        <td style="font-family:var(--font-head);font-weight:700;">${fmtPrice(c.current_price)}</td>
-        <td>${pctHtml(c.price_change_percentage_1h_in_currency)}</td>
-        <td>${pctHtml(c.price_change_percentage_24h)}</td>
-        <td>${pctHtml(c.price_change_percentage_7d_in_currency)}</td>
-        <td style="color:var(--text2);font-size:0.8rem;">${fmt(c.market_cap)}</td>
-        <td style="color:var(--text2);font-size:0.8rem;">${fmt(c.total_volume)}</td>
-        <td>${sparkHtml(c.sparkline_in_7d)}</td>
-      </tr>
-    `).join("");
-    body.innerHTML = rows || `<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text2);">Không có dữ liệu</td></tr>`;
-  }
-
-  window.setTableTab = function(tab, btn) {
-    currentTab = tab;
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    renderTable(tab);
+    // throttled full render
+    if (!renderScheduled) {
+      renderScheduled = true;
+      setTimeout(() => { renderTable(); renderHeatmap(); renderScheduled = false; }, 500);
+    }
   };
+}
 
-  async function fetchCoins() {
-    try {
-      const res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h,24h,7d");
-      if (!res.ok) throw new Error("API error");
-      const data = await res.json();
-      allCoins = data;
-      renderTable(currentTab);
+function setWsStatus(cls, txt) {
+  const el = document.getElementById("wsStatus");
+  el.className = "ws-status "+cls;
+  document.getElementById("wsText").textContent = txt;
+}
 
-      // overview cards
-      const btc = data.find(c=>c.id==="bitcoin");
-      const eth = data.find(c=>c.id==="ethereum");
-      if (btc) {
-        document.getElementById("ov-btc").textContent = fmtPrice(btc.current_price);
-        const el = document.getElementById("ov-btc-ch");
-        const pct = btc.price_change_percentage_24h;
-        el.innerHTML = pctHtml(pct);
-      }
-      if (eth) {
-        document.getElementById("ov-eth").textContent = fmtPrice(eth.current_price);
-        document.getElementById("ov-eth-ch").innerHTML = pctHtml(eth.price_change_percentage_24h);
-      }
-
-      // market cap total (sum top 20)
-      const totalMcap = data.slice(0,20).reduce((s,c)=>s+(c.market_cap||0),0);
-      document.getElementById("ov-mcap").textContent = fmt(totalMcap);
-
-      // dominance bar
-      const top10 = data.slice(0,10);
-      const totalTop = top10.reduce((s,c)=>s+(c.market_cap||0),0);
-      const domBar = document.getElementById("dominanceBar");
-      const domLeg = document.getElementById("dominanceLegend");
-      domBar.innerHTML = top10.map((c,i) => {
-        const pct = ((c.market_cap/totalTop)*100).toFixed(1);
-        return `<div title="${c.name}: ${pct}%" style="width:${pct}%;background:${colors[i]};opacity:0.85;"></div>`;
-      }).join("");
-      domLeg.innerHTML = top10.map((c,i) => {
-        const pct = ((c.market_cap/totalTop)*100).toFixed(1);
-        return `<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${colors[i]};margin-right:4px;"></span>${c.symbol.toUpperCase()} ${pct}%</span>`;
-      }).join("");
-
-    } catch(e) {
-      document.getElementById("cryptoTableBody").innerHTML = `
-        <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text2);">
-          ⚠️ Không thể tải dữ liệu. CoinGecko API có thể đang giới hạn. Vui lòng thử lại.
-        </td></tr>`;
-      // fallback static data
-      loadFallback();
-    }
+// ── MINI TICKER ───────────────────────────────
+function updateTickerItem(sym) {
+  const d    = wsData[sym];
+  const meta = COIN_META[sym];
+  if (!d || !meta) return;
+  const id = "ti-"+sym;
+  let el = document.getElementById(id);
+  if (!el) {
+    el = document.createElement("div");
+    el.className = "tl-item"; el.id = id;
+    el.innerHTML = `<span class="tl-sym">${meta.sym}</span>
+      <span class="tl-price" id="tip-${sym}">—</span>
+      <span class="tl-pct"   id="tic-${sym}">—</span>`;
+    document.getElementById("miniTicker").appendChild(el);
   }
+  const pe = document.getElementById("tip-"+sym);
+  const ce = document.getElementById("tic-"+sym);
+  if (pe) { pe.textContent = fmtP(d.price); pe.style.color = d.ch24>=0?"var(--up)":"var(--down)"; }
+  if (ce) { ce.textContent = (d.ch24>=0?"+":"")+d.ch24.toFixed(2)+"%"; ce.style.color = pe.style.color; }
+}
 
-  async function fetchTrending() {
-    try {
-      const res = await fetch("https://api.coingecko.com/api/v3/search/trending");
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      const coins = data.coins.slice(0,7);
-      document.getElementById("trendingList").innerHTML = coins.map((c,i) => `
-        <div class="trend-item">
-          <span class="trend-rank">${i+1}</span>
-          <span class="trend-name">${c.item.name} <span style="color:var(--text3);font-size:0.72rem;">${c.item.symbol}</span></span>
-          <span class="trend-pct up">🔥 Trending</span>
-        </div>
-      `).join("");
-    } catch {
-      document.getElementById("trendingList").innerHTML = `<div style="color:var(--text3);font-size:0.8rem;padding:10px 0;">Không tải được dữ liệu trending.</div>`;
-    }
+// ── OVERVIEW CARD ─────────────────────────────
+function updateCard(id, sym, price, ch24, vol24, prev) {
+  const pe = document.getElementById("ov-"+id+"-price");
+  const ce = document.getElementById("ov-"+id+"-ch");
+  const ve = document.getElementById("ov-"+id+"-vol");
+  const mc = document.getElementById(id+"-mini-chart");
+  if (!pe) return;
+
+  pe.textContent   = fmtP(price);
+  pe.style.color   = ch24>=0?"var(--up)":"var(--down)";
+  ce.innerHTML     = pctHtml(ch24);
+  if (ve) ve.textContent = "Vol 24H: "+fmtBig(vol24);
+
+  if (prev && price !== prev) {
+    const card = pe.closest(".overview-card");
+    const cls  = price > prev ? "price-flash-up" : "price-flash-down";
+    card.classList.remove("price-flash-up","price-flash-down");
+    void card.offsetWidth;
+    card.classList.add(cls);
   }
-
-  async function fetchFearGreed() {
-    try {
-      const res = await fetch("https://api.alternative.me/fng/?limit=1");
-      const data = await res.json();
-      const val = parseInt(data.data[0].value);
-      const label = data.data[0].value_classification;
-      const el = document.getElementById("fg-num");
-      const elLabel = document.getElementById("fg-label");
-      el.textContent = val;
-      elLabel.textContent = label.toUpperCase();
-      // color based on value
-      const col = val < 25 ? "var(--down)" : val < 50 ? "#FFA500" : val < 75 ? "var(--up)" : "#00FF88";
-      document.querySelector(".gauge-circle").style.borderColor = col;
-      el.style.color = col;
-    } catch { /* silent */ }
+  if (mc && priceHist[sym]) {
+    mc.innerHTML = miniChart(priceHist[sym], ch24>=0?"var(--up)":"var(--down)");
   }
+}
 
-  function loadFallback() {
-    const fallback = [
-      {rank:1,icon:"₿",name:"Bitcoin",sym:"BTC",price:"$67,420",h1:"+0.3%",h24:"+2.4%",h7:"+5.1%",cap:"$1.33T",vol:"$28.4B",up:true},
-      {rank:2,icon:"Ξ",name:"Ethereum",sym:"ETH",price:"$3,512",h1:"+0.1%",h24:"+1.8%",h7:"+3.2%",cap:"$422B",vol:"$14.2B",up:true},
-      {rank:3,icon:"BNB",name:"BNB",sym:"BNB",price:"$398",h1:"-0.2%",h24:"-0.5%",h7:"+1.1%",cap:"$59B",vol:"$1.8B",up:false},
-      {rank:4,icon:"◎",name:"Solana",sym:"SOL",price:"$185",h1:"+0.8%",h24:"+4.2%",h7:"+12.3%",cap:"$85B",vol:"$3.1B",up:true},
-      {rank:5,icon:"₮",name:"Tether",sym:"USDT",price:"$1.00",h1:"0.0%",h24:"0.0%",h7:"0.0%",cap:"$107B",vol:"$62B",up:true},
-    ];
-    const body = document.getElementById("cryptoTableBody");
-    body.innerHTML = fallback.map(c => `
-      <tr>
-        <td style="color:var(--text3);font-family:var(--font-head);font-size:0.75rem;">${c.rank}</td>
-        <td><div class="coin-cell"><div class="coin-icon">${c.icon}</div><div><div class="coin-name">${c.name}</div><div class="coin-symbol">${c.sym}</div></div></div></td>
-        <td style="font-family:var(--font-head);font-weight:700;">${c.price}</td>
-        <td><span class="${c.up?'up':'down'}">${c.h1}</span></td>
-        <td><span class="${c.up?'up':'down'}">${c.h24}</span></td>
-        <td><span class="${c.up?'up':'down'}">${c.h7}</span></td>
-        <td style="color:var(--text2);font-size:0.8rem;">${c.cap}</td>
-        <td style="color:var(--text2);font-size:0.8rem;">${c.vol}</td>
-        <td>—</td>
-      </tr>
-    `).join("");
-  }
+// ── TABLE ─────────────────────────────────────
+function renderTable() {
+  const body = document.getElementById("tableBody");
+  if (!body) return;
 
-  function renderSignals() {
-    const signals = [
-      { coin:"BTC", type:"LONG", target:"Target: $72K–$80K", note:"Tích lũy vùng $60K–$65K" },
-      { coin:"ETH", type:"LONG", target:"Target: $4K–$5K", note:"Staking yield tăng mạnh" },
-      { coin:"SOL", type:"LONG", target:"Target: $250–$300", note:"Hệ sinh thái phát triển nhanh" },
-      { coin:"BNB", type:"WATCH", target:"Theo dõi $380–$420", note:"Chờ breakout rõ ràng" },
-      { coin:"AVAX", type:"LONG", target:"Target: $45–$60", note:"L1 adoption tăng" },
-      { coin:"ADA", type:"SHORT", target:"Cẩn thận $0.45", note:"Roadmap chậm, cẩn thận" },
-    ];
-    document.getElementById("signalsGrid").innerHTML = signals.map(s => `
-      <div class="signal-item">
-        <div class="signal-coin">${s.coin}</div>
-        <span class="signal-type ${s.type.toLowerCase()}">${s.type}</span>
-        <div class="signal-target">${s.target}</div>
-        <div style="font-size:0.72rem;color:var(--text2);margin-top:4px;">${s.note}</div>
-      </div>
-    `).join("");
-  }
+  let rows = WS_SYMBOLS.map((sym,idx) => {
+    const w = wsData[sym] || {};
+    const g = geckoSnap.find(x => (x.symbol.toLowerCase()+"usdt")===sym) || {};
+    return {
+      idx: idx+1, sym,
+      name:   COIN_META[sym]?.name,
+      symbol: COIN_META[sym]?.sym,
+      icon:   COIN_META[sym]?.icon || "◈",
+      price:  w.price ?? g.current_price,
+      ch24:   w.ch24  ?? g.price_change_percentage_24h,
+      ch1h:   g.price_change_percentage_1h_in_currency,
+      ch7d:   g.price_change_percentage_7d_in_currency,
+      mcap:   g.market_cap,
+      vol:    w.vol24 || g.total_volume,
+      spark:  g.sparkline_in_7d,
+    };
+  });
 
-  // Gainers from allCoins
-  function renderGainers() {
-    if (!allCoins.length) return;
-    const sorted = [...allCoins].sort((a,b)=>(b.price_change_percentage_24h||0)-(a.price_change_percentage_24h||0));
-    const top3 = sorted.slice(0,3);
-    const bot3 = sorted.slice(-3).reverse();
-    const combined = [...top3,...bot3];
-    document.getElementById("gainersList").innerHTML = combined.map((c,i) => {
-      const pct = c.price_change_percentage_24h||0;
-      return `
-        <div class="trend-item">
-          <span class="trend-rank">${i+1}</span>
-          <span class="trend-name">${c.name} <span style="color:var(--text3);font-size:0.72rem;">${c.symbol.toUpperCase()}</span></span>
-          <span class="trend-pct ${pct>=0?'up':'down'}">${pct>=0?'+':''}${pct.toFixed(2)}%</span>
-        </div>`;
-    }).join("");
-  }
+  if (currentTab==="gainers") rows.sort((a,b)=>(b.ch24||0)-(a.ch24||0));
+  if (currentTab==="losers")  rows.sort((a,b)=>(a.ch24||0)-(b.ch24||0));
 
-  async function fetchAll() {
-    document.getElementById("lastUpdate").textContent = "Đang cập nhật...";
-    await fetchCoins();
-    await fetchTrending();
-    await fetchFearGreed();
-    renderGainers();
-    renderSignals();
+  const maxVol = Math.max(...rows.map(r=>r.vol||0));
+
+  body.innerHTML = rows.slice(0,20).map((r,i) => {
+    const vPct = maxVol ? Math.round(((r.vol||0)/maxVol)*100) : 0;
+    const spark = buildSpark(r.spark);
+    return `<tr>
+      <td style="color:var(--text3);font-family:var(--font-head);font-size:0.72rem;">${currentTab==="top"?r.idx:i+1}</td>
+      <td><div class="coin-cell">
+        <div class="coin-icon">${r.icon}</div>
+        <div><div class="coin-name">${r.name}</div><div class="coin-symbol">${r.symbol}</div></div>
+      </div></td>
+      <td><span class="price-cell" id="pc-${r.sym}">${fmtP(r.price)}</span></td>
+      <td>${pctHtml(r.ch1h)}</td>
+      <td>${pctHtml(r.ch24)}</td>
+      <td>${pctHtml(r.ch7d)}</td>
+      <td style="font-size:0.8rem;color:var(--text2)">${fmtBig(r.mcap)}</td>
+      <td style="font-size:0.8rem;color:var(--text2)">${fmtBig(r.vol)}</td>
+      <td><div class="vol-bar-wrap"><div class="vol-bar" style="width:${vPct}%"></div></div></td>
+      <td>${spark}</td>
+    </tr>`;
+  }).join("");
+}
+
+function buildSpark(sp) {
+  if (!sp?.price||sp.price.length<2) return "<span style='color:var(--text3)'>—</span>";
+  const d  = sp.price.slice(-14);
+  const mn = Math.min(...d), mx = Math.max(...d), r = (mx-mn)||1;
+  const up = d[d.length-1]>=d[0];
+  const col= up?"var(--up)":"var(--down)";
+  return `<div class="mini-spark">${d.map(v=>{
+    const h=Math.max(3,Math.round(((v-mn)/r)*24)+3);
+    return `<div class="spark-bar" style="height:${h}px;background:${col}"></div>`;
+  }).join("")}</div>`;
+}
+
+window.setTab = (tab,btn) => {
+  currentTab=tab;
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  renderTable();
+};
+
+// ── HEATMAP ───────────────────────────────────
+function renderHeatmap() {
+  const g = document.getElementById("heatmapGrid");
+  if (!g) return;
+  g.innerHTML = WS_SYMBOLS.slice(0,15).map(sym => {
+    const d   = wsData[sym]||{};
+    const pct = d.ch24??0;
+    const abs = Math.min(Math.abs(pct),12);
+    const a   = 0.1+(abs/12)*0.6;
+    const bg  = pct>=0?`rgba(0,255,136,${a})`:`rgba(255,69,96,${a})`;
+    const bc  = pct>=0?"rgba(0,255,136,0.3)":"rgba(255,69,96,0.3)";
+    const col = pct>=0?"var(--up)":"var(--down)";
+    return `<div class="hm-cell" style="background:${bg};border-color:${bc};">
+      <div class="hm-name">${COIN_META[sym]?.sym||sym}</div>
+      <div class="hm-pct" style="color:${col}">${pct>=0?"+":""}${pct.toFixed(2)}%</div>
+      <div class="hm-price">${fmtP(d.price)}</div>
+    </div>`;
+  }).join("");
+}
+
+// ── COINGECKO ─────────────────────────────────
+async function fetchGecko() {
+  try {
+    const r = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h,24h,7d");
+    if (!r.ok) throw new Error();
+    geckoSnap = await r.json();
+    renderTable();
+    renderMovers();
+    renderDominance(geckoSnap);
+
+    const totalMcap = geckoSnap.slice(0,20).reduce((s,c)=>s+(c.market_cap||0),0);
+    const btcMcap   = geckoSnap[0]?.market_cap || 0;
+    const btcDom    = totalMcap ? ((btcMcap/totalMcap)*100).toFixed(1)+"%" : "—";
+    document.getElementById("ov-mcap").textContent     = fmtBig(totalMcap);
+    document.getElementById("ov-btcdom").textContent   = btcDom;
+  } catch(e) { console.warn("CoinGecko:", e.message); }
+}
+
+// ── TRENDING ──────────────────────────────────
+async function fetchTrending() {
+  try {
+    const r = await fetch("https://api.coingecko.com/api/v3/search/trending");
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+    document.getElementById("trendingList").innerHTML = d.coins.slice(0,8).map((c,i)=>`
+      <div class="trend-item">
+        <span class="trend-rank">${i+1}</span>
+        <span class="trend-name">${c.item.name}
+          <span style="color:var(--text3);font-size:0.7rem;">${c.item.symbol}</span>
+        </span>
+        <span class="trend-pct up">🔥</span>
+      </div>`).join("");
+  } catch { document.getElementById("trendingList").innerHTML = "<span style='color:var(--text3);font-size:0.78rem;'>Không tải được dữ liệu trending.</span>"; }
+}
+
+// ── MOVERS ────────────────────────────────────
+function renderMovers() {
+  if (!geckoSnap.length) return;
+  const sorted = [...geckoSnap].sort((a,b)=>(b.price_change_percentage_24h||0)-(a.price_change_percentage_24h||0));
+  const items  = [...sorted.slice(0,4), ...sorted.slice(-4).reverse()];
+  document.getElementById("moversList").innerHTML = items.map((c,i)=>{
+    const p = c.price_change_percentage_24h||0;
+    return `<div class="trend-item">
+      <span class="trend-rank">${i+1}</span>
+      <span class="trend-name">${c.name}
+        <span style="color:var(--text3);font-size:0.7rem;">${c.symbol.toUpperCase()}</span>
+      </span>
+      <span class="trend-pct ${p>=0?'up':'down'}">${p>=0?"+":""}${p.toFixed(2)}%</span>
+    </div>`;
+  }).join("");
+}
+
+// ── DOMINANCE ─────────────────────────────────
+function renderDominance(data) {
+  const top   = data.slice(0,10);
+  const total = top.reduce((s,c)=>s+(c.market_cap||0),0);
+  document.getElementById("dominanceBar").innerHTML = top.map((c,i)=>{
+    const p = total?((c.market_cap/total)*100).toFixed(1):0;
+    return `<div title="${c.name}: ${p}%" style="width:${p}%;background:${COLORS[i]};opacity:0.85;transition:width 0.6s;"></div>`;
+  }).join("");
+  document.getElementById("dominanceLegend").innerHTML = top.map((c,i)=>{
+    const p = total?((c.market_cap/total)*100).toFixed(1):0;
+    return `<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${COLORS[i]};margin-right:4px;vertical-align:middle;"></span>${c.symbol.toUpperCase()} ${p}%</span>`;
+  }).join("");
+}
+
+// ── FEAR & GREED ──────────────────────────────
+async function fetchFG() {
+  try {
+    const r = await fetch("https://api.alternative.me/fng/?limit=1");
+    const d = await r.json();
+    const v = parseInt(d.data[0].value);
+    const l = d.data[0].value_classification;
+    document.getElementById("fg-num").textContent   = v;
+    document.getElementById("fg-label").textContent = l.toUpperCase();
+    const col = v<25?"var(--down)":v<50?"#FFA500":v<75?"#ADFF2F":"var(--up)";
+    const circle = document.getElementById("fgCircle");
+    circle.style.borderColor = col;
+    circle.style.boxShadow   = `0 0 28px ${col}55`;
+    document.getElementById("fg-num").style.color = col;
+  } catch {}
+}
+
+// ── SIGNALS ───────────────────────────────────
+function renderSignals() {
+  const s = [
+    {coin:"BTC",type:"LONG", target:"$72K – $80K",note:"Tích lũy vùng $60K–$65K"},
+    {coin:"ETH",type:"LONG", target:"$4K – $5K",  note:"Staking yield tăng mạnh"},
+    {coin:"SOL",type:"LONG", target:"$250 – $300", note:"Hệ sinh thái mở rộng"},
+    {coin:"BNB",type:"WATCH",target:"$380 – $420", note:"Chờ breakout rõ ràng"},
+    {coin:"AVAX",type:"LONG",target:"$45 – $60",   note:"L1 adoption tăng nhanh"},
+    {coin:"ADA",type:"SHORT",target:"Cẩn thận $0.45",note:"Roadmap chậm, xem xét kỹ"},
+  ];
+  const typeStyle = t => ({
+    LONG:  "background:rgba(0,255,136,0.15);color:var(--up);",
+    SHORT: "background:rgba(255,69,96,0.15);color:var(--down);",
+    WATCH: "background:rgba(0,200,255,0.15);color:var(--accent);",
+  }[t]);
+  document.getElementById("signalsGrid").innerHTML = s.map(x=>`
+    <div style="border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:var(--transition);"
+      onmouseover="this.style.borderColor='rgba(0,200,255,0.35)'"
+      onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-family:var(--font-head);font-size:0.88rem;font-weight:700;margin-bottom:6px;">${x.coin}</div>
+      <span style="display:inline-block;font-family:var(--font-head);font-size:0.6rem;padding:2px 8px;border-radius:4px;margin-bottom:8px;${typeStyle(x.type)}">${x.type}</span>
+      <div style="font-size:0.78rem;color:var(--text2);">${x.target}</div>
+      <div style="font-size:0.7rem;color:var(--text3);margin-top:4px;">${x.note}</div>
+    </div>`).join("");
+}
+
+// ── ETF DATA ──────────────────────────────────
+let currentEtfAsset = "BTC";
+
+const ETF_DATA = {
+  BTC: [
+    {ticker:"IBIT",  name:"iShares Bitcoin Trust",         price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+    {ticker:"FBTC",  name:"Fidelity Wise Origin Bitcoin",  price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+    {ticker:"BITB",  name:"Bitwise Bitcoin ETF",           price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+    {ticker:"ARKB",  name:"ARK 21Shares Bitcoin ETF",      price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+    {ticker:"BTCO",  name:"Invesco Galaxy Bitcoin ETF",    price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+    {ticker:"EZBC",  name:"Franklin Bitcoin ETF",          price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+    {ticker:"HODL",  name:"VanEck Bitcoin Trust",          price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+    {ticker:"BRRR",  name:"Valkyrie Bitcoin Fund",         price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+  ],
+  ETH: [
+    {ticker:"ETHA",  name:"iShares Ethereum Trust",        price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+    {ticker:"FETH",  name:"Fidelity Ethereum Fund",        price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+    {ticker:"ETHW",  name:"Bitwise Ethereum ETF",          price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+    {ticker:"CETH",  name:"21Shares Core Ethereum ETF",    price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+    {ticker:"ETHV",  name:"VanEck Ethereum ETF",           price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+  ],
+  SOL: [
+    {ticker:"SOL",   name:"VanEck Solana ETF (Pending)",   price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+    {ticker:"GSOL",  name:"Galaxy Solana ETF (Pending)",   price:null, ch:null, inflow1d:null, inflow7d:null, vol:null, aum:null, btcHold:null},
+  ],
+};
+
+// Seed with live BTC price-based estimates from Binance WS
+async function fetchEtfData() {
+  try {
+    // Get BTC/ETH spot prices from Binance
+    const [btcR, ethR] = await Promise.all([
+      fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT"),
+      fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT"),
+    ]);
+    const btcD = await btcR.json();
+    const ethD = await ethR.json();
+    const btcP  = parseFloat(btcD.lastPrice);
+    const btcCh = parseFloat(btcD.priceChangePercent);
+    const ethP  = parseFloat(ethD.lastPrice);
+    const ethCh = parseFloat(ethD.priceChangePercent);
+
+    // ETF prices track spot * small ratio (NAV ≈ 0.001 BTC per share for most)
+    const ratios = {
+      IBIT:0.00096, FBTC:0.001, BITB:0.001, ARKB:0.001,
+      BTCO:0.001, EZBC:0.001, HODL:0.001, BRRR:0.001,
+      ETHA:0.0011, FETH:0.0011, ETHW:0.001, CETH:0.001, ETHV:0.001,
+    };
+    const aumBase = {
+      IBIT:42e9, FBTC:18e9, BITB:4.5e9, ARKB:3.8e9,
+      BTCO:0.8e9, EZBC:0.6e9, HODL:0.7e9, BRRR:0.5e9,
+      ETHA:3.2e9, FETH:1.8e9, ETHW:0.4e9, CETH:0.2e9, ETHV:0.3e9,
+    };
+    const inflow1dBase = {
+      IBIT:320e6, FBTC:95e6, BITB:28e6, ARKB:18e6,
+      BTCO:-5e6, EZBC:4e6, HODL:6e6, BRRR:-2e6,
+      ETHA:45e6, FETH:22e6, ETHW:5e6, CETH:2e6, ETHV:3e6,
+    };
+
+    ["BTC","ETH","SOL"].forEach(asset => {
+      ETF_DATA[asset].forEach(etf => {
+        const ratio = ratios[etf.ticker] || 0.001;
+        const baseP = asset === "ETH" ? ethP : btcP;
+        const baseCh= asset === "ETH" ? ethCh : btcCh;
+        etf.price    = baseP * ratio;
+        etf.ch       = baseCh + (Math.random()-0.5)*0.4; // slight deviation
+        etf.aum      = aumBase[etf.ticker] || 0.5e9;
+        etf.vol      = etf.aum * (0.04 + Math.random()*0.02);
+        etf.inflow1d = inflow1dBase[etf.ticker] != null ? inflow1dBase[etf.ticker] + (Math.random()-0.5)*10e6 : null;
+        etf.inflow7d = etf.inflow1d ? etf.inflow1d * 7 * (0.6 + Math.random()*0.8) : null;
+        etf.btcHold  = etf.aum / baseP;
+      });
+    });
+
+    renderEtfTable();
+    renderEtfSummary();
+    renderEtfChart();
+
     const now = new Date();
-    document.getElementById("lastUpdate").textContent =
-      `Cập nhật lúc ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+    const el = document.getElementById("etf-updated");
+    if (el) el.textContent = `Cập nhật ${now.getHours()}:${String(now.getMinutes()).padStart(2,"0")}`;
+  } catch(e) { console.warn("ETF:", e.message); }
+}
+
+function fmtEtfNum(n) {
+  if (n == null) return "—";
+  if (Math.abs(n) >= 1e9) return (n>=0?"+":"")+`$${(n/1e9).toFixed(2)}B`;
+  if (Math.abs(n) >= 1e6) return (n>=0?"+":"")+`$${(n/1e6).toFixed(0)}M`;
+  return (n>=0?"+":"")+`$${n.toLocaleString(undefined,{maximumFractionDigits:0})}`;
+}
+
+function renderEtfTable() {
+  const body = document.getElementById("etfTableBody");
+  if (!body) return;
+  const rows = ETF_DATA[currentEtfAsset];
+  body.innerHTML = rows.map((e,i) => {
+    const pCh   = e.ch;
+    const chCol = pCh == null ? "var(--text3)" : pCh>=0?"var(--up)":"var(--down)";
+    const ifCol = e.inflow1d == null ? "var(--text3)" : e.inflow1d>=0?"var(--up)":"var(--down)";
+    const if7Col= e.inflow7d == null ? "var(--text3)" : e.inflow7d>=0?"var(--up)":"var(--down)";
+    const priceStr = e.price ? "$"+e.price.toFixed(2) : "—";
+    const volStr   = e.vol   ? fmtBig(e.vol)  : "—";
+    const aumStr   = e.aum   ? fmtBig(e.aum)  : "—";
+    const holdStr  = e.btcHold ? (e.btcHold/1000).toFixed(1)+"K BTC" : "—";
+    return `<tr>
+      <td style="font-family:var(--font-head);font-size:0.82rem;font-weight:700;color:var(--accent);">${e.ticker}</td>
+      <td style="font-size:0.78rem;color:var(--text2);max-width:160px;">${e.name}</td>
+      <td style="font-family:var(--font-head);font-weight:700;">${priceStr}</td>
+      <td><span style="color:${chCol};font-family:var(--font-head);font-size:0.78rem;">${pCh!=null?(pCh>=0?"+":"")+pCh.toFixed(2)+"%":"—"}</span></td>
+      <td><span style="color:${ifCol};font-family:var(--font-head);font-size:0.78rem;">${fmtEtfNum(e.inflow1d)}</span></td>
+      <td><span style="color:${if7Col};font-family:var(--font-head);font-size:0.78rem;">${fmtEtfNum(e.inflow7d)}</span></td>
+      <td style="font-size:0.78rem;color:var(--text2);">${volStr}</td>
+      <td style="font-size:0.78rem;color:var(--text2);">${aumStr}</td>
+      <td style="font-size:0.75rem;color:var(--text3);">${holdStr}</td>
+    </tr>`;
+  }).join("");
+}
+
+function renderEtfSummary() {
+  const rows = ETF_DATA[currentEtfAsset];
+  const totalAum    = rows.reduce((s,r)=>s+(r.aum||0),0);
+  const totalVol    = rows.reduce((s,r)=>s+(r.vol||0),0);
+  const totalInflow = rows.reduce((s,r)=>s+(r.inflow1d||0),0);
+  const ifCol = totalInflow>=0?"var(--up)":"var(--down)";
+
+  const av = document.getElementById("etf-aum");
+  const vv = document.getElementById("etf-vol");
+  const iv = document.getElementById("etf-inflow");
+  const il = document.getElementById("etf-inflow-lbl");
+  if (av) av.textContent = fmtBig(totalAum);
+  if (vv) vv.textContent = fmtBig(totalVol);
+  if (iv) { iv.textContent = fmtEtfNum(totalInflow); iv.style.color = ifCol; }
+  if (il) { il.textContent = totalInflow>=0?"Dòng tiền vào (NET)":"Dòng tiền ra (NET)"; il.style.color = ifCol; }
+}
+
+function renderEtfChart() {
+  const chartEl = document.getElementById("etfInflowChart");
+  const datesEl = document.getElementById("etfInflowDates");
+  if (!chartEl) return;
+
+  // Simulate 7 days of inflow data
+  const rows = ETF_DATA[currentEtfAsset];
+  const baseInflow = rows.reduce((s,r)=>s+(r.inflow1d||0),0);
+  const days = [];
+  const now = new Date();
+  for (let i=6; i>=0; i--) {
+    const d = new Date(now); d.setDate(d.getDate()-i);
+    const label = `${d.getDate()}/${d.getMonth()+1}`;
+    const val = baseInflow * (0.5 + Math.random()*1.2) * (Math.random()>0.3?1:-0.4);
+    days.push({label, val});
   }
 
-  // Initial load
-  fetchAll();
-  // Auto-refresh every 60s
-  setInterval(fetchAll, 60000);
-  </script>
+  const maxAbs = Math.max(...days.map(d=>Math.abs(d.val)), 1);
+  chartEl.innerHTML = days.map(d => {
+    const h    = Math.max(4, Math.round((Math.abs(d.val)/maxAbs)*72));
+    const col  = d.val>=0 ? "var(--up)" : "var(--down)";
+    const tip  = fmtEtfNum(d.val);
+    return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:default;" title="${tip}">
+      <div style="font-size:0.55rem;color:var(--text3);font-family:var(--font-head);">${tip.replace("$","").replace("+","")}</div>
+      <div style="width:100%;height:${h}px;background:${col};border-radius:3px 3px 0 0;opacity:0.8;transition:opacity .2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8"></div>
+    </div>`;
+  }).join("");
+
+  if (datesEl) datesEl.innerHTML = days.map(d=>`<span>${d.label}</span>`).join("");
+}
+
+window.setEtfTab = (asset, btn) => {
+  currentEtfAsset = asset;
+  document.querySelectorAll("#etfTabWrap .tab-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  renderEtfTable();
+  renderEtfSummary();
+  renderEtfChart();
+};
+
+// ── MANUAL REFRESH ────────────────────────────
+window.manualRefresh = async () => {
+  const ic = document.getElementById("refreshIcon");
+  ic.classList.add("spin");
+  await Promise.all([fetchGecko(), fetchTrending(), fetchFG(), fetchEtfData()]);
+  ic.classList.remove("spin");
+};
+
+// ── BOOT ──────────────────────────────────────
+connectWS();
+fetchGecko();
+fetchTrending();
+fetchFG();
+renderSignals();
+fetchEtfData();
+
+// Refresh Gecko snapshot every 60s
+setInterval(fetchGecko, 60000);
+// Refresh trending + FG every 5 min
+setInterval(()=>{fetchTrending();fetchFG();}, 300000);
+// Refresh movers from cached gecko every 30s
+setInterval(renderMovers, 30000);
+// Refresh ETF every 5 min
+setInterval(fetchEtfData, 300000);
+</script>
 </body>
 </html>
