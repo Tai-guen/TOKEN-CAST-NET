@@ -3,198 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TOKEN CAST NET – Ahaibi | 9 năm thực chiến thị trường tài chính (Forex, Chứng khoán, Crypto) </title>
-  <meta name="description" content=​ "Kinh nghiệm: Với đội ngũ dẫn dắt  giàu kinh nghiệm , tham gia thị trường tài chính từ năm 2017. Trải qua đầy đủ các cung bậc cảm xúc của Forex, Chứng khoán và Crypto qua nhiều chu kỳ lớn cùng tầm nhìn rộng .
-Triết lý: Đầu tư dựa trên tầm nhìn , công nghệ và xu hướng phát triển thế giới là nhu cầu kết nối của nhân loại, không dựa trên sự hưng phấn nhất thời. "Tài sản chỉ thực sự bền vững khi đi kèm với kiến thức và kỷ luật."
-Mục tiêu: Xây dựng Token Castnet thành nơi chia sẻ kiến thức thực chiến, giúp nhà đầu tư mới và mọi người hiểu rõ về chu kỳ thị trường và quản lý rủi ro để tồn tại và phát triển bền vững đúng với định nghĩa "Đầu tư""/>
+  <title>TOKEN CAST NET – Ahaibi | Tư vấn Tài chính & Crypto</title>
+  <meta name="description" content="Chia sẻ kiến thức tài chính số, phân tích crypto chuyên sâu và tối ưu hóa danh mục đầu tư." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Sora:wght@300;400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <style>
-/* ── CRYPTO INDEX CARD (Hero Visual) ── */
-.crypto-index-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  width: 320px;
-  box-shadow: var(--glow-lg);
-  position: relative;
-  overflow: hidden;
-}
-.crypto-index-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(0,200,255,0.04), transparent);
-  pointer-events: none;
-}
-.ci-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-}
-.ci-title {
-  font-family: var(--font-head);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  color: var(--accent);
-}
-.ci-live {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-family: var(--font-head);
-  font-size: 0.6rem;
-  color: var(--up);
-}
-.ci-live-dot {
-  width: 6px; height: 6px;
-  background: var(--up);
-  border-radius: 50%;
-  animation: blink 1.2s ease-in-out infinite;
-}
-.ci-metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-.ci-metric {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 12px;
-  transition: var(--transition);
-}
-.ci-metric:hover { border-color: rgba(0,200,255,0.3); }
-.ci-metric-label {
-  font-family: var(--font-head);
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
-  color: var(--text3);
-  margin-bottom: 4px;
-}
-.ci-metric-val {
-  font-family: var(--font-head);
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text);
-}
-.ci-metric-sub {
-  font-size: 0.62rem;
-  margin-top: 2px;
-}
-.ci-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 12px 0;
-}
-.ci-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.75rem;
-  padding: 4px 0;
-}
-.ci-row-label { color: var(--text2); font-family: var(--font-head); font-size: 0.65rem; letter-spacing: 0.06em; }
-.ci-row-val   { font-family: var(--font-head); font-size: 0.75rem; font-weight: 700; }
-.ci-updated {
-  font-size: 0.6rem;
-  color: var(--text3);
-  font-family: var(--font-head);
-  text-align: right;
-  margin-top: 10px;
-}
-
-/* ── GLOBAL INDEX BAR (replaces static ticker) ── */
-.index-bar {
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 0;
-  overflow: hidden;
-  position: relative;
-}
-.index-bar-static {
-  display: flex;
-  align-items: stretch;
-  overflow-x: auto;
-  scrollbar-width: none;
-  white-space: nowrap;
-}
-.index-bar-static::-webkit-scrollbar { display: none; }
-.ib-segment {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border-right: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.ib-label {
-  font-family: var(--font-head);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  color: var(--text3);
-}
-.ib-val {
-  font-family: var(--font-head);
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--text);
-}
-.ib-ch {
-  font-family: var(--font-head);
-  font-size: 0.65rem;
-}
-.ib-separator { width: 1px; height: 30px; background: var(--border); }
-.ib-ticker-wrap {
-  flex: 1;
-  overflow: hidden;
-  position: relative;
-}
-.ib-ticker {
-  display: flex;
-  width: max-content;
-  animation: scroll 40s linear infinite;
-  align-items: center;
-  height: 100%;
-  padding: 8px 0;
-}
-.ib-ticker:hover { animation-play-state: paused; }
-.ib-tick-item {
-  font-family: var(--font-head);
-  font-size: 0.72rem;
-  padding: 0 24px;
-  white-space: nowrap;
-  color: var(--text2);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.ib-tick-item em { font-style: normal; }
-.price-flash-up   { animation: flashUp 0.5s ease; }
-.price-flash-down { animation: flashDown 0.5s ease; }
-@keyframes flashUp   { 0%,100%{color:var(--text)} 40%{color:var(--up)} }
-@keyframes flashDown { 0%,100%{color:var(--text)} 40%{color:var(--down)} }
-
-/* ── FGI color ring ── */
-.fgi-ring {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.fgi-num   { font-family: var(--font-head); font-size: 0.88rem; font-weight: 700; }
-.fgi-label { font-size: 0.5rem; color: var(--text3); letter-spacing: 0.05em; }
-  </style>
 </head>
 <body>
-  <!-- NAV -->
+
+  <!-- ══ NAVBAR ══ -->
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
       <a class="logo" href="index.html">
@@ -208,13 +25,15 @@ Mục tiêu: Xây dựng Token Castnet thành nơi chia sẻ kiến thức thự
         <li><a href="#products">Sản phẩm</a></li>
         <li><a href="#contact" class="btn-nav">Liên hệ</a></li>
       </ul>
-      <button class="hamburger" id="hamburger">
-        <span></span><span></span><span></span>
-      </button>
+      <!-- Theme toggle + hamburger -->
+      <div style="display:flex;align-items:center;gap:6px;">
+        <button class="theme-toggle" id="themeToggle" title="Đổi giao diện">🌙</button>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
     </div>
   </nav>
 
-  <!-- HERO -->
+  <!-- ══ HERO ══ -->
   <section class="hero">
     <div class="hero-grid-bg"></div>
     <div class="hero-orbs">
@@ -222,105 +41,120 @@ Mục tiêu: Xây dựng Token Castnet thành nơi chia sẻ kiến thức thự
       <div class="orb orb2"></div>
       <div class="orb orb3"></div>
     </div>
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="dot"></span> LIVE · Thị trường đang hoạt động
-      </div>
-      <h1 class="hero-title">
-        Đầu tư thông minh<br/>
-        <span class="gradient-text">trong kỷ nguyên số</span>
-      </h1>
-      <p class="hero-sub">
-        Tư vấn tài chính & crypto chuyên sâu · Phân tích dữ liệu · Quản trị rủi ro<br/>
-        Tối ưu danh mục đầu tư với AI
-      </p>
-      <div class="hero-cta">
-        <a href="dashboard.html" class="btn-primary">Xem Dashboard <span>→</span></a>
-        <a href="blog.html" class="btn-ghost">Đọc Blog</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-num">5K+</span>
-          <span class="stat-label">Cộng đồng</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num">200+</span>
-          <span class="stat-label">Bài phân tích</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num">7+</span>
-          <span class="stat-label">Năm kinh nghiệm</span>
-        </div>
-      </div>
-    </div>
 
-    <!-- ② CRYPTO INDEX CARD (replaces static chart card) -->
-    <div class="hero-visual">
-      <div class="crypto-index-card">
-        <div class="ci-header">
-          <span class="ci-title">◈ CRYPTO INDEX</span>
-          <span class="ci-live"><span class="ci-live-dot"></span>LIVE</span>
+    <div class="hero-inner">
+      <!-- LEFT: text content -->
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span> LIVE · Thị trường đang hoạt động
         </div>
-
-        <!-- 4 main metrics -->
-        <div class="ci-metrics">
-          <div class="ci-metric">
-            <div class="ci-metric-label">MARKET CAP</div>
-            <div class="ci-metric-val" id="idx-mcap">—</div>
-            <div class="ci-metric-sub" id="idx-mcap-ch">—</div>
+        <h1 class="hero-title">
+          Đầu tư thông minh<br/>
+          <span class="gradient-text">trong kỷ nguyên số</span>
+        </h1>
+        <p class="hero-sub">
+          Tư vấn tài chính & crypto chuyên sâu · Phân tích dữ liệu · Quản trị rủi ro<br/>
+          Tối ưu danh mục đầu tư với AI
+        </p>
+        <div class="hero-cta">
+          <a href="dashboard.html" class="btn-primary">Xem Dashboard <span>→</span></a>
+          <a href="blog.html" class="btn-ghost">Đọc Blog</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num">5K+</span>
+            <span class="stat-label">Cộng đồng</span>
           </div>
-          <div class="ci-metric">
-            <div class="ci-metric-label">FEAR & GREED</div>
-            <div class="ci-metric-val" id="idx-fgi-num">—</div>
-            <div class="ci-metric-sub" id="idx-fgi-lbl">—</div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num">200+</span>
+            <span class="stat-label">Bài phân tích</span>
           </div>
-          <div class="ci-metric">
-            <div class="ci-metric-label">BTC PRICE</div>
-            <div class="ci-metric-val" id="idx-btc">—</div>
-            <div class="ci-metric-sub" id="idx-btc-ch">—</div>
-          </div>
-          <div class="ci-metric">
-            <div class="ci-metric-label">ETH PRICE</div>
-            <div class="ci-metric-val" id="idx-eth">—</div>
-            <div class="ci-metric-sub" id="idx-eth-ch">—</div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num">3+</span>
+            <span class="stat-label">Năm kinh nghiệm</span>
           </div>
         </div>
-
-        <div class="ci-divider"></div>
-
-        <!-- Extra rows -->
-        <div class="ci-row">
-          <span class="ci-row-label">BTC DOMINANCE</span>
-          <span class="ci-row-val" id="idx-btcdom">—</span>
-        </div>
-        <div class="ci-row">
-          <span class="ci-row-label">TOTAL VOLUME 24H</span>
-          <span class="ci-row-val" id="idx-vol">—</span>
-        </div>
-        <div class="ci-row">
-          <span class="ci-row-label">ACTIVE COINS</span>
-          <span class="ci-row-val" id="idx-coins">—</span>
-        </div>
-        <div class="ci-row">
-          <span class="ci-row-label">ETH GAS (GWEI)</span>
-          <span class="ci-row-val" id="idx-gas">—</span>
-        </div>
-
-        <div class="ci-updated" id="idx-updated">Đang tải...</div>
       </div>
-    </div>
+
+      <!-- RIGHT: Crypto Index + Ad Banner -->
+      <div class="hero-right-col">
+
+        <!-- CRYPTO INDEX CARD -->
+        <div class="crypto-index-card">
+          <div class="ci-header">
+            <span class="ci-title">◈ CRYPTO INDEX</span>
+            <span class="ci-live"><span class="ci-live-dot"></span>LIVE</span>
+          </div>
+          <div class="ci-metrics">
+            <div class="ci-metric">
+              <div class="ci-metric-label">MARKET CAP</div>
+              <div class="ci-metric-val" id="idx-mcap">—</div>
+              <div class="ci-metric-sub" id="idx-mcap-ch">—</div>
+            </div>
+            <div class="ci-metric">
+              <div class="ci-metric-label">FEAR & GREED</div>
+              <div class="ci-metric-val" id="idx-fgi-num">—</div>
+              <div class="ci-metric-sub" id="idx-fgi-lbl">—</div>
+            </div>
+            <div class="ci-metric">
+              <div class="ci-metric-label">BTC PRICE</div>
+              <div class="ci-metric-val" id="idx-btc">—</div>
+              <div class="ci-metric-sub" id="idx-btc-ch">—</div>
+            </div>
+            <div class="ci-metric">
+              <div class="ci-metric-label">ETH PRICE</div>
+              <div class="ci-metric-val" id="idx-eth">—</div>
+              <div class="ci-metric-sub" id="idx-eth-ch">—</div>
+            </div>
+          </div>
+          <div class="ci-divider"></div>
+          <div class="ci-row">
+            <span class="ci-row-label">BTC DOMINANCE</span>
+            <span class="ci-row-val" id="idx-btcdom">—</span>
+          </div>
+          <div class="ci-row">
+            <span class="ci-row-label">TOTAL VOLUME 24H</span>
+            <span class="ci-row-val" id="idx-vol">—</span>
+          </div>
+          <div class="ci-row">
+            <span class="ci-row-label">ACTIVE COINS</span>
+            <span class="ci-row-val" id="idx-coins">—</span>
+          </div>
+          <div class="ci-row">
+            <span class="ci-row-label">ETH GAS (GWEI)</span>
+            <span class="ci-row-val" id="idx-gas">—</span>
+          </div>
+          <div class="ci-updated" id="idx-updated">Đang tải...</div>
+        </div>
+
+        <!-- ═══════════════════════════════════════
+             AD BANNER – CASHBACK SÀN GIAO DỊCH
+             ═══════════════════════════════════════
+             HƯỚNG DẪN CHỈNH SỬA:
+             Tìm const ADS_DATA bên dưới để:
+             - Đổi link affiliate: trường "link"
+             - Đổi % cashback:    trường "offer"
+             - Đổi màu nền:       trường "bg"
+             - Thêm/bớt sàn:      thêm/xóa object {}
+        ═══════════════════════════════════════ -->
+        <div class="ad-banner-wrap" id="adBanner">
+          <!-- Rendered by JS -->
+          <div class="ad-dots" id="adDots"></div>
+        </div>
+
+      </div><!-- /hero-right-col -->
+    </div><!-- /hero-inner -->
   </section>
 
-  <!-- ③ GLOBAL INDEX BAR (replaces static ticker) -->
+  <!-- ══ INDEX BAR (live ticker + global metrics) ══ -->
   <div class="index-bar" id="indexBar">
     <div class="index-bar-static">
-      <!-- Left: key global metrics -->
       <div class="ib-segment">
         <div>
           <div class="ib-label">MARKET</div>
-          <div style="display:flex;align-items:center;gap:6px;">
+          <div style="display:flex;align-items:center;gap:5px;">
             <span class="ib-val" id="ib-mcap">—</span>
             <span class="ib-ch" id="ib-mcap-ch">—</span>
           </div>
@@ -333,7 +167,7 @@ Mục tiêu: Xây dựng Token Castnet thành nơi chia sẻ kiến thức thự
         </div>
         <div>
           <div class="ib-label">FEAR & GREED</div>
-          <span class="ib-ch" id="ib-fgi-ch" style="font-family:var(--font-head);font-size:0.65rem;">—</span>
+          <span class="ib-ch" id="ib-fgi-ch" style="font-family:var(--font-head);font-size:0.62rem;">—</span>
         </div>
       </div>
       <div class="ib-segment">
@@ -354,14 +188,13 @@ Mục tiêu: Xây dựng Token Castnet thành nơi chia sẻ kiến thức thự
           <span class="ib-val" id="ib-gas">—</span>
         </div>
       </div>
-      <!-- Right: live coin ticker -->
       <div class="ib-ticker-wrap">
         <div class="ib-ticker" id="ibTicker"></div>
       </div>
     </div>
   </div>
 
-  <!-- ABOUT -->
+  <!-- ══ ABOUT ══ -->
   <section class="section about-section" id="about">
     <div class="container">
       <div class="about-grid">
@@ -396,7 +229,7 @@ Mục tiêu: Xây dựng Token Castnet thành nơi chia sẻ kiến thức thự
     </div>
   </section>
 
-  <!-- FEATURED POSTS -->
+  <!-- ══ BLOG POSTS ══ -->
   <section class="section" id="blog">
     <div class="container">
       <div class="section-header">
@@ -435,7 +268,7 @@ Mục tiêu: Xây dựng Token Castnet thành nơi chia sẻ kiến thức thự
     </div>
   </section>
 
-  <!-- PRODUCTS -->
+  <!-- ══ PRODUCTS ══ -->
   <section class="section products-section" id="products">
     <div class="container">
       <div class="section-tag">SẢN PHẨM & DỊCH VỤ</div>
@@ -471,7 +304,7 @@ Mục tiêu: Xây dựng Token Castnet thành nơi chia sẻ kiến thức thự
     </div>
   </section>
 
-  <!-- CONTACT -->
+  <!-- ══ CONTACT ══ -->
   <section class="section contact-section" id="contact">
     <div class="container">
       <div class="contact-wrap">
@@ -489,7 +322,7 @@ Mục tiêu: Xây dựng Token Castnet thành nơi chia sẻ kiến thức thự
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ══ FOOTER ══ -->
   <footer class="footer">
     <div class="container">
       <div class="footer-top">
@@ -515,19 +348,178 @@ Mục tiêu: Xây dựng Token Castnet thành nơi chia sẻ kiến thức thự
       </div>
       <div class="footer-bottom">
         <span>© 2026 Token Cast Net · Ahaibi. All rights reserved.</span>
-        <span>⚠️ Mọi nội dung tại đây chỉ mang tính chất chia sẻ kiến thức , cập nhật thông tin và tham khảo ý kiến cá nhân, không cấu thành lời khuyên đầu tư chuyên nghiệp hay dịch vụ tài chính và người dùng cần tự chịu trách nhiệm tuân thủ các quy định pháp luật Việt Nam hiện hành liên quan đến giao dịch và tài sản số . Admin TOKEN CASTNET (AhaiBi).</span>
+        <span>⚠️ Không phải lời khuyên tài chính. DYOR.</span>
       </div>
     </div>
   </footer>
 
-  <script src="main.js"></script>
-  <script>
-// ════════════════════════════════════════════
-//  INDEX.HTML — REALTIME DATA ENGINE
-//  Sources: CoinGecko + alternative.me + Binance WS + Etherscan
-// ════════════════════════════════════════════
+<script src="main.js"></script>
+<script>
+// ═══════════════════════════════════════════════════
+//  TOKEN CAST NET · index.js
+//  1. Theme toggle (dark/light + localStorage)
+//  2. Ad banner slider
+//  3. Crypto Index Card (CoinGecko + Binance WS)
+//  4. Index bar (live ticker)
+// ═══════════════════════════════════════════════════
 
-const TICKER_SYMBOLS = [
+// ── 1. THEME TOGGLE ─────────────────────────────
+const THEME_KEY = "tcn_theme";
+const themeBtn  = document.getElementById("themeToggle");
+
+function applyTheme(theme) {
+  if (theme === "light") {
+    document.body.classList.add("light");
+    themeBtn.textContent = "☀️";
+  } else {
+    document.body.classList.remove("light");
+    themeBtn.textContent = "🌙";
+  }
+  localStorage.setItem(THEME_KEY, theme);
+}
+
+// Load saved theme
+applyTheme(localStorage.getItem(THEME_KEY) || "dark");
+
+themeBtn.addEventListener("click", () => {
+  applyTheme(document.body.classList.contains("light") ? "dark" : "light");
+});
+
+// ── 2. AD BANNER DATA ───────────────────────────
+// ══════════════════════════════════════════════════
+// HƯỚNG DẪN CHỈNH SỬA BANNER QUẢNG CÁO:
+// - "link"    : thay bằng link giới thiệu (affiliate) của bạn
+// - "offer"   : % hoàn phí hoặc ưu đãi chính
+// - "sub"     : mô tả ngắn thêm
+// - "bg"      : màu gradient nền thẻ
+// Thêm sàn mới: copy 1 object {}, paste vào cuối mảng
+// ══════════════════════════════════════════════════
+const ADS_DATA = [
+  {
+    logo:     "🟡",
+    exchange: "BINANCE",
+    offer:    "Hoàn 20% phí giao dịch mãi mãi",
+    sub:      "Sàn số 1 thế giới · Spot & Futures",
+    cta:      "Đăng ký ngay",
+    link:     "#",   // ← THAY BẰNG LINK AFFILIATE BINANCE CỦA BẠN
+    bg:       "linear-gradient(135deg,#1A1200,#2A1E00)",
+    border:   "#F0B90B44",
+    accent:   "#F0B90B",
+  },
+  {
+    logo:     "⚫",
+    exchange: "OKX",
+    offer:    "Hoàn 20% phí + $10 chào mừng",
+    sub:      "Top 3 sàn toàn cầu · OTC & DeFi",
+    cta:      "Nhận ưu đãi",
+    link:     "#",   // ← THAY BẰNG LINK AFFILIATE OKX CỦA BẠN
+    bg:       "linear-gradient(135deg,#0D0D0D,#1A1A1A)",
+    border:   "#FFFFFF22",
+    accent:   "#CCCCCC",
+  },
+  {
+    logo:     "🔵",
+    exchange: "BYBIT",
+    offer:    "Cashback 30% phí Spot & Futures",
+    sub:      "Ưu đãi lên đến $30,000 USDT",
+    cta:      "Claim ngay",
+    link:     "#",   // ← THAY BẰNG LINK AFFILIATE BYBIT CỦA BẠN
+    bg:       "linear-gradient(135deg,#001833,#002855)",
+    border:   "#2775CA44",
+    accent:   "#2775CA",
+  },
+  {
+    logo:     "🔴",
+    exchange: "BITGET",
+    offer:    "Hoàn 20% phí + Bonus $100",
+    sub:      "Copy Trade hàng đầu · 700+ coins",
+    cta:      "Tham gia",
+    link:     "#",   // ← THAY BẰNG LINK AFFILIATE BITGET CỦA BẠN
+    bg:       "linear-gradient(135deg,#1A0005,#2A000A)",
+    border:   "#00CDD744",
+    accent:   "#00CDD7",
+  },
+  {
+    logo:     "🟢",
+    exchange: "KUCOIN",
+    offer:    "Hoàn 20% phí giao dịch mãi mãi",
+    sub:      "800+ altcoin · Lending & Earn",
+    cta:      "Mở tài khoản",
+    link:     "#",   // ← THAY BẰNG LINK AFFILIATE KUCOIN CỦA BẠN
+    bg:       "linear-gradient(135deg,#001A00,#002800)",
+    border:   "#22AC3844",
+    accent:   "#22AC38",
+  },
+  {
+    logo:     "🇻🇳",
+    exchange: "CAEX",
+    offer:    "Sàn Việt Nam – Phí 0% tháng đầu",
+    sub:      "VNĐ ↔ USDT · Hỗ trợ 24/7 tiếng Việt",
+    cta:      "Đăng ký miễn phí",
+    link:     "#",   // ← THAY BẰNG LINK CAEX CỦA BẠN
+    bg:       "linear-gradient(135deg,#1A0000,#2A0000)",
+    border:   "#FF000044",
+    accent:   "#FF6B6B",
+  },
+];
+
+let adCurrent   = 0;
+let adTimer     = null;
+const adBanner  = document.getElementById("adBanner");
+const adDots    = document.getElementById("adDots");
+
+function renderAdSlide(idx) {
+  const ad = ADS_DATA[idx];
+  // Remove old slide
+  const old = adBanner.querySelector(".ad-slide");
+  if (old) old.remove();
+
+  const slide = document.createElement("a");
+  slide.className  = "ad-slide active";
+  slide.href       = ad.link;
+  slide.target     = "_blank";
+  slide.rel        = "noopener";
+  slide.style.cssText = `background:${ad.bg};border-color:${ad.border};`;
+  slide.innerHTML  = `
+    <div class="ad-logo" style="border-color:${ad.border};">${ad.logo}</div>
+    <div class="ad-body">
+      <div class="ad-exchange" style="color:${ad.accent};">${ad.exchange}</div>
+      <div class="ad-offer">${ad.offer}</div>
+      <div class="ad-sub">${ad.sub}</div>
+    </div>
+    <div class="ad-cta" style="background:${ad.accent};color:#050A0F;">${ad.cta}</div>`;
+  adBanner.insertBefore(slide, adDots);
+
+  // Update dots
+  adDots.querySelectorAll(".ad-dot").forEach((d,i) => d.classList.toggle("active", i===idx));
+}
+
+function initAdBanner() {
+  // Build dots
+  ADS_DATA.forEach((_, i) => {
+    const d = document.createElement("span");
+    d.className = "ad-dot" + (i===0?" active":"");
+    d.addEventListener("click", () => { adCurrent=i; renderAdSlide(i); resetAdTimer(); });
+    adDots.appendChild(d);
+  });
+
+  renderAdSlide(0);
+
+  function nextAd() {
+    adCurrent = (adCurrent + 1) % ADS_DATA.length;
+    renderAdSlide(adCurrent);
+  }
+  function resetAdTimer() { clearInterval(adTimer); adTimer = setInterval(nextAd, 4000); }
+  resetAdTimer();
+
+  // Pause on hover
+  adBanner.addEventListener("mouseenter", () => clearInterval(adTimer));
+  adBanner.addEventListener("mouseleave", resetAdTimer);
+}
+initAdBanner();
+
+// ── 3. LIVE DATA ENGINE ─────────────────────────
+const WS_SYMBOLS = [
   "btcusdt","ethusdt","bnbusdt","solusdt","xrpusdt",
   "adausdt","avaxusdt","dogeusdt","linkusdt","tonusdt",
   "dotusdt","maticusdt","ltcusdt","nearusdt","uniusdt"
@@ -538,113 +530,74 @@ const SYM_META = {
   dotusdt:"DOT",maticusdt:"MATIC",ltcusdt:"LTC",nearusdt:"NEAR",uniusdt:"UNI"
 };
 
-let wsTickerData = {};
+const fmtP   = n => !n?"—": n>=10000?"$"+n.toLocaleString(undefined,{maximumFractionDigits:0}): n>=1?"$"+n.toFixed(2):"$"+n.toFixed(4);
+const fmtBig = n => !n?"—": n>=1e12?"$"+(n/1e12).toFixed(2)+"T": n>=1e9?"$"+(n/1e9).toFixed(2)+"B":"$"+(n/1e6).toFixed(1)+"M";
+const pctStr = v => v==null?"—":(v>=0?"+":"")+v.toFixed(2)+"%";
+const pctCol = v => v>=0?"var(--up)":"var(--down)";
+const setEl  = (id,txt,col) => { const el=document.getElementById(id); if(!el)return; el.textContent=txt; if(col)el.style.color=col; };
 
-// ── FORMAT ────────────────────────────────────
-const fmtP = n => {
-  if (!n) return "—";
-  if (n >= 10000) return "$" + n.toLocaleString(undefined,{maximumFractionDigits:0});
-  if (n >= 1)     return "$" + n.toFixed(2);
-  return "$" + n.toFixed(4);
-};
-const fmtBig = n => {
-  if (!n) return "—";
-  if (n >= 1e12) return "$"+(n/1e12).toFixed(2)+"T";
-  if (n >= 1e9)  return "$"+(n/1e9).toFixed(2)+"B";
-  if (n >= 1e6)  return "$"+(n/1e6).toFixed(2)+"M";
-  return "$"+n.toLocaleString();
-};
-const pctStr = v => v == null ? "—" : (v>=0?"+":"")+v.toFixed(2)+"%";
-const pctCol = v => v >= 0 ? "var(--up)" : "var(--down)";
-const setEl  = (id, txt, col) => {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = txt;
-  if (col) el.style.color = col;
-};
-
-// ── BINANCE WS (ticker) ───────────────────────
-function connectTicker() {
-  const streams = TICKER_SYMBOLS.map(s=>s+"@miniTicker").join("/");
+// Binance WebSocket
+function connectWS() {
+  const streams = WS_SYMBOLS.map(s=>s+"@miniTicker").join("/");
   const ws = new WebSocket("wss://stream.binance.com:9443/stream?streams="+streams);
   ws.onmessage = evt => {
     const msg = JSON.parse(evt.data);
     if (!msg.data) return;
     const d   = msg.data;
     const sym = d.s.toLowerCase();
-    const price= parseFloat(d.c);
-    const open = parseFloat(d.o);
-    const ch   = ((price - open) / open) * 100;
-    wsTickerData[sym] = { price, ch };
+    const price = parseFloat(d.c);
+    const ch    = ((price - parseFloat(d.o)) / parseFloat(d.o)) * 100;
     updateTickerItem(sym, price, ch);
-    if (sym === "btcusdt") {
-      setEl("idx-btc", fmtP(price), ch>=0?"var(--up)":"var(--down)");
-      setEl("idx-btc-ch", pctStr(ch), pctCol(ch));
-    }
-    if (sym === "ethusdt") {
-      setEl("idx-eth", fmtP(price), ch>=0?"var(--up)":"var(--down)");
-      setEl("idx-eth-ch", pctStr(ch), pctCol(ch));
-    }
+    if (sym==="btcusdt") { setEl("idx-btc",fmtP(price),pctCol(ch)); setEl("idx-btc-ch",pctStr(ch),pctCol(ch)); }
+    if (sym==="ethusdt") { setEl("idx-eth",fmtP(price),pctCol(ch)); setEl("idx-eth-ch",pctStr(ch),pctCol(ch)); }
   };
-  ws.onclose = () => setTimeout(connectTicker, 3000);
+  ws.onclose = () => setTimeout(connectWS, 3000);
 }
 
-// ── TICKER BAR items ──────────────────────────
 function updateTickerItem(sym, price, ch) {
-  const label = SYM_META[sym] || sym.replace("usdt","").toUpperCase();
+  const label = SYM_META[sym]||sym.replace("usdt","").toUpperCase();
   const id    = "ibt-"+sym;
   let el = document.getElementById(id);
   if (!el) {
     el = document.createElement("span");
-    el.className = "ib-tick-item";
-    el.id = id;
+    el.className="ib-tick-item"; el.id=id;
     document.getElementById("ibTicker").appendChild(el);
-    // duplicate for seamless loop — append clone
     const clone = el.cloneNode(true);
-    clone.id = "ibt-clone-"+sym;
+    clone.id = "ibt2-"+sym;
     document.getElementById("ibTicker").appendChild(clone);
   }
-  const col = ch >= 0 ? "var(--up)" : "var(--down)";
-  const arr = ch >= 0 ? "▲" : "▼";
-  const html = `${label} <em style="color:${col}">${fmtP(price)} ${arr}${Math.abs(ch).toFixed(2)}%</em>`;
+  const col = ch>=0?"var(--up)":"var(--down)";
+  const html = `${label} <em style="color:${col}">${fmtP(price)} ${ch>=0?"▲":"▼"}${Math.abs(ch).toFixed(2)}%</em>`;
   el.innerHTML = html;
-  const clone2 = document.getElementById("ibt-clone-"+sym);
-  if (clone2) clone2.innerHTML = html;
+  const c2 = document.getElementById("ibt2-"+sym);
+  if (c2) c2.innerHTML = html;
 }
 
-// ── COINGECKO GLOBAL ──────────────────────────
+// CoinGecko global
 async function fetchGlobal() {
   try {
     const r = await fetch("https://api.coingecko.com/api/v3/global");
     if (!r.ok) throw new Error();
     const d = (await r.json()).data;
-    const mcap    = d.total_market_cap.usd;
-    const mcapCh  = d.market_cap_change_percentage_24h_usd;
-    const vol     = d.total_volume.usd;
-    const btcDom  = d.market_cap_percentage.btc;
-    const coins   = d.active_cryptocurrencies;
-    const exch    = d.markets;
-
-    // Crypto Index card
+    const mcap   = d.total_market_cap.usd;
+    const mcapCh = d.market_cap_change_percentage_24h_usd;
+    const vol    = d.total_volume.usd;
+    const btcDom = d.market_cap_percentage.btc;
     setEl("idx-mcap",    fmtBig(mcap));
     setEl("idx-mcap-ch", pctStr(mcapCh), pctCol(mcapCh));
-    setEl("idx-btcdom",  btcDom.toFixed(1)+"%");
+    setEl("idx-btcdom",  btcDom.toFixed(1)+"%", "var(--accent)");
     setEl("idx-vol",     fmtBig(vol));
-    setEl("idx-coins",   coins.toLocaleString());
-
-    // Index bar
-    setEl("ib-mcap",    fmtBig(mcap));
-    setEl("ib-mcap-ch", pctStr(mcapCh), pctCol(mcapCh));
-    setEl("ib-coins",   coins.toLocaleString());
-    setEl("ib-exchanges", exch.toLocaleString());
-
-    // Updated time
+    setEl("idx-coins",   d.active_cryptocurrencies.toLocaleString());
+    setEl("ib-mcap",     fmtBig(mcap));
+    setEl("ib-mcap-ch",  pctStr(mcapCh), pctCol(mcapCh));
+    setEl("ib-coins",    d.active_cryptocurrencies.toLocaleString());
+    setEl("ib-exchanges",d.markets.toLocaleString());
     const now = new Date();
-    setEl("idx-updated", `Cập nhật ${now.getHours()}:${String(now.getMinutes()).padStart(2,"0")}`);
-  } catch(e) { console.warn("global:", e.message); }
+    setEl("idx-updated","Cập nhật "+now.getHours()+":"+String(now.getMinutes()).padStart(2,"0"));
+  } catch {}
 }
 
-// ── FEAR & GREED ──────────────────────────────
+// Fear & Greed
 async function fetchFG() {
   try {
     const r = await fetch("https://api.alternative.me/fng/?limit=1");
@@ -652,49 +605,40 @@ async function fetchFG() {
     const v = parseInt(d.data[0].value);
     const l = d.data[0].value_classification;
     const col = v<25?"var(--down)":v<50?"#FFA500":v<75?"#ADFF2F":"var(--up)";
-
     setEl("idx-fgi-num", v, col);
     setEl("idx-fgi-lbl", l.toUpperCase(), "var(--text3)");
     setEl("ib-fgi-num",  v, col);
-    setEl("ib-fgi-lbl",  l.split(" ")[0].toUpperCase(), "var(--text3)");
+    setEl("ib-fgi-lbl",  l.split(" ")[0].toUpperCase());
     setEl("ib-fgi-ch",   "FGI "+v, col);
-
     const ring = document.getElementById("ib-fgi-ring");
-    if (ring) ring.style.borderColor = col;
+    if (ring) { ring.style.borderColor=col; }
   } catch {}
 }
 
-// ── ETH GAS via Etherscan public (no key needed for basic) ──
+// ETH Gas (free estimate)
 async function fetchGas() {
   try {
-    // Use ethgasstation alternative - free
-    const r = await fetch("https://api.blocknative.com/gasprices/blockprices");
+    const r = await fetch("https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken");
     const d = await r.json();
-    const gwei = Math.round(d.blockPrices[0].estimatedPrices[1].price);
-    setEl("idx-gas", gwei+" Gwei");
-    setEl("ib-gas",  gwei+" Gwei");
+    if (d.status==="1") {
+      const g = d.result.ProposeGasPrice;
+      setEl("idx-gas", g+" Gwei");
+      setEl("ib-gas",  g+" Gwei");
+    } else throw new Error();
   } catch {
-    // fallback: just show estimate from Binance gas oracle isn't public
-    // use a simple static fallback
-    try {
-      const r2 = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd&include_24hr_change=true");
-      const d2 = await r2.json();
-      // gas not available from gecko, show placeholder
-      setEl("idx-gas", "~15 Gwei");
-      setEl("ib-gas",  "~15 Gwei");
-    } catch {}
+    setEl("idx-gas","~15 Gwei");
+    setEl("ib-gas", "~15 Gwei");
   }
 }
 
-// ── BOOT ──────────────────────────────────────
-connectTicker();
+// Boot
+connectWS();
 fetchGlobal();
 fetchFG();
 fetchGas();
-
 setInterval(fetchGlobal, 60000);
 setInterval(fetchFG, 300000);
 setInterval(fetchGas, 30000);
-  </script>
+</script>
 </body>
 </html>

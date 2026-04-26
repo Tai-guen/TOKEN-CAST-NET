@@ -1,52 +1,65 @@
-// TOKEN CAST NET – main.js
+// TOKEN CAST NET – main.js v3
 
-// ── NAV SCROLL EFFECT ──
+// ── NAV SCROLL ──
 const navbar = document.getElementById("navbar");
 if (navbar) {
   window.addEventListener("scroll", () => {
-    navbar.style.background = window.scrollY > 50
-      ? "rgba(5,10,15,0.95)"
-      : "rgba(5,10,15,0.8)";
-  });
+    navbar.style.boxShadow = window.scrollY > 40 ? "0 2px 20px rgba(0,0,0,0.3)" : "none";
+  }, { passive: true });
 }
 
-// ── HAMBURGER MENU ──
+// ── HAMBURGER ──
 const hamburger = document.getElementById("hamburger");
 const navLinks  = document.getElementById("navLinks");
 if (hamburger && navLinks) {
   hamburger.addEventListener("click", () => {
-    navLinks.classList.toggle("open");
-    hamburger.classList.toggle("open");
+    const open = navLinks.classList.toggle("open");
+    hamburger.classList.toggle("open", open);
+    document.body.style.overflow = open ? "hidden" : "";
   });
-  // close on link click
   navLinks.querySelectorAll("a").forEach(a => {
     a.addEventListener("click", () => {
       navLinks.classList.remove("open");
       hamburger.classList.remove("open");
+      document.body.style.overflow = "";
     });
+  });
+  // Close on outside click
+  document.addEventListener("click", e => {
+    if (navLinks.classList.contains("open") && !navbar.contains(e.target)) {
+      navLinks.classList.remove("open");
+      hamburger.classList.remove("open");
+      document.body.style.overflow = "";
+    }
   });
 }
 
 // ── INTERSECTION OBSERVER (fade-in) ──
-const observer = new IntersectionObserver((entries) => {
+const obs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      e.target.style.opacity = "1";
+      e.target.style.opacity  = "1";
       e.target.style.transform = "translateY(0)";
     }
   });
-}, { threshold: 0.1 });
+}, { threshold: 0.08 });
 
-document.querySelectorAll(".blog-card, .product-card, .overview-card, .skill-item, .trend-card, .signal-card").forEach(el => {
-  el.style.opacity = "0";
-  el.style.transform = "translateY(20px)";
+document.querySelectorAll(
+  ".blog-card, .product-card, .overview-card, .skill-item, .trend-card, .signal-card, .blog-card-full"
+).forEach(el => {
+  el.style.opacity   = "0";
+  el.style.transform = "translateY(18px)";
   el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
-  observer.observe(el);
+  obs.observe(el);
 });
 
-// ── TICKER PAUSE ON HOVER ──
-const ticker = document.getElementById("ticker");
-if (ticker) {
-  ticker.addEventListener("mouseenter", () => ticker.style.animationPlayState = "paused");
-  ticker.addEventListener("mouseleave", () => ticker.style.animationPlayState = "running");
-}
+// ── SMOOTH SCROLL for anchor links ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener("click", e => {
+    const target = document.querySelector(a.getAttribute("href"));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+});
