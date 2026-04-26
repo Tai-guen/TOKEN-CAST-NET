@@ -387,134 +387,219 @@ themeBtn.addEventListener("click", () => {
 
 // ── 2. AD BANNER DATA ───────────────────────────
 // ══════════════════════════════════════════════════
-// HƯỚNG DẪN CHỈNH SỬA BANNER QUẢNG CÁO:
-// - "link"    : thay bằng link giới thiệu (affiliate) của bạn
-// - "offer"   : % hoàn phí hoặc ưu đãi chính
-// - "sub"     : mô tả ngắn thêm
-// - "bg"      : màu gradient nền thẻ
-// Thêm sàn mới: copy 1 object {}, paste vào cuối mảng
+// HƯỚNG DẪN CHỈNH SỬA:
+// - "link" : thay "#" bằng link affiliate của bạn
+// - "tag"  : nhãn nhỏ phía trên (HOT / NEW / VN / v.v.)
+// - "offer": dòng chữ lớn chính
+// - "sub"  : mô tả phụ bên dưới
+// Thêm sàn: copy 1 object {} và paste cuối mảng
 // ══════════════════════════════════════════════════
 const ADS_DATA = [
   {
-    logo:     "🟡",
+    // SVG logo Binance (vòng tròn vàng + B)
+    logoSvg: `<svg viewBox="0 0 48 48" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="24" fill="#F0B90B"/>
+      <path fill="#fff" d="M16.6 20.4l7.4-7.4 7.4 7.4-2.6 2.6-4.8-4.8-4.8 4.8zm-4.6 4.6 2.6-2.6 2.6 2.6-2.6 2.6zm4.6 4.6 4.8 4.8 4.8-4.8 2.6 2.6-7.4 7.4-7.4-7.4zm15.6-4.6 2.6-2.6 2.6 2.6-2.6 2.6zm-5.5 0-2.7-2.7 2.7-2.7 2.7 2.7z"/>
+    </svg>`,
     exchange: "BINANCE",
+    tag:      "🔥 HOT",
+    tagColor: "#F0B90B",
     offer:    "Hoàn 20% phí giao dịch mãi mãi",
-    sub:      "Sàn số 1 thế giới · Spot & Futures",
+    sub:      "Sàn số 1 thế giới · 350+ triệu người dùng · Spot & Futures",
     cta:      "Đăng ký ngay",
-    link:     "#",   // ← THAY BẰNG LINK AFFILIATE BINANCE CỦA BẠN
-    bg:       "linear-gradient(135deg,#1A1200,#2A1E00)",
-    border:   "#F0B90B44",
+    link:     "#",   // ← LINK AFFILIATE BINANCE
+    bg_dark:  "linear-gradient(135deg,#1C1500 0%,#2E2000 60%,#1C1500 100%)",
+    bg_light: "linear-gradient(135deg,#FFFBEA 0%,#FFF3C4 100%)",
+    border:   "#F0B90B55",
     accent:   "#F0B90B",
+    ctaColor: "#1A1200",
   },
   {
-    logo:     "⚫",
+    logoSvg: `<svg viewBox="0 0 48 48" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="24" fill="#000"/>
+      <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="20" font-weight="900" font-family="Arial">OKX</text>
+    </svg>`,
     exchange: "OKX",
-    offer:    "Hoàn 20% phí + $10 chào mừng",
-    sub:      "Top 3 sàn toàn cầu · OTC & DeFi",
+    tag:      "⚡ TOP 3",
+    tagColor: "#A0A0A0",
+    offer:    "Giảm 20% phí + Thưởng $10 tân thủ",
+    sub:      "300M+ người dùng · Web3 Wallet · DeFi & OTC thị trường sâu",
     cta:      "Nhận ưu đãi",
-    link:     "#",   // ← THAY BẰNG LINK AFFILIATE OKX CỦA BẠN
-    bg:       "linear-gradient(135deg,#0D0D0D,#1A1A1A)",
-    border:   "#FFFFFF22",
-    accent:   "#CCCCCC",
+    link:     "#",   // ← LINK AFFILIATE OKX
+    bg_dark:  "linear-gradient(135deg,#0D0D0D 0%,#1A1A1A 100%)",
+    bg_light: "linear-gradient(135deg,#F5F5F5 0%,#E8E8E8 100%)",
+    border:   "#FFFFFF33",
+    accent:   "#E0E0E0",
+    ctaColor: "#000000",
   },
   {
-    logo:     "🔵",
+    logoSvg: `<svg viewBox="0 0 48 48" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="24" fill="#2775CA"/>
+      <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="13" font-weight="900" font-family="Arial">BYBIT</text>
+    </svg>`,
     exchange: "BYBIT",
-    offer:    "Cashback 30% phí Spot & Futures",
-    sub:      "Ưu đãi lên đến $30,000 USDT",
+    tag:      "💎 VIP",
+    tagColor: "#2775CA",
+    offer:    "Cashback 30% phí + Thưởng $30,000 USDT",
+    sub:      "Futures thanh khoản cao nhất · Copy Trade · Launchpad độc quyền",
     cta:      "Claim ngay",
-    link:     "#",   // ← THAY BẰNG LINK AFFILIATE BYBIT CỦA BẠN
-    bg:       "linear-gradient(135deg,#001833,#002855)",
-    border:   "#2775CA44",
-    accent:   "#2775CA",
+    link:     "#",   // ← LINK AFFILIATE BYBIT
+    bg_dark:  "linear-gradient(135deg,#001228 0%,#001E42 100%)",
+    bg_light: "linear-gradient(135deg,#EAF2FF 0%,#D4E8FF 100%)",
+    border:   "#2775CA55",
+    accent:   "#3D8EF0",
+    ctaColor: "#fff",
   },
   {
-    logo:     "🔴",
+    logoSvg: `<svg viewBox="0 0 48 48" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="24" fill="#00CDD7"/>
+      <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="10" font-weight="900" font-family="Arial">BITGET</text>
+    </svg>`,
     exchange: "BITGET",
-    offer:    "Hoàn 20% phí + Bonus $100",
-    sub:      "Copy Trade hàng đầu · 700+ coins",
+    tag:      "🚀 NEW",
+    tagColor: "#00CDD7",
+    offer:    "Hoàn 20% phí + Bonus $100 USDT",
+    sub:      "Copy Trade #1 thế giới · 800+ coin · 20M người dùng",
     cta:      "Tham gia",
-    link:     "#",   // ← THAY BẰNG LINK AFFILIATE BITGET CỦA BẠN
-    bg:       "linear-gradient(135deg,#1A0005,#2A000A)",
-    border:   "#00CDD744",
+    link:     "#",   // ← LINK AFFILIATE BITGET
+    bg_dark:  "linear-gradient(135deg,#001618 0%,#002428 100%)",
+    bg_light: "linear-gradient(135deg,#E6FEFF 0%,#C8FBFF 100%)",
+    border:   "#00CDD755",
     accent:   "#00CDD7",
+    ctaColor: "#001618",
   },
   {
-    logo:     "🟢",
+    logoSvg: `<svg viewBox="0 0 48 48" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="24" fill="#22AC38"/>
+      <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="10" font-weight="900" font-family="Arial">KuCoin</text>
+    </svg>`,
     exchange: "KUCOIN",
-    offer:    "Hoàn 20% phí giao dịch mãi mãi",
-    sub:      "800+ altcoin · Lending & Earn",
+    tag:      "🌿 EARN",
+    tagColor: "#22AC38",
+    offer:    "Hoàn 20% phí · Staking APY 15%+",
+    sub:      "800+ altcoin · Lending · P2P · Bot giao dịch tự động",
     cta:      "Mở tài khoản",
-    link:     "#",   // ← THAY BẰNG LINK AFFILIATE KUCOIN CỦA BẠN
-    bg:       "linear-gradient(135deg,#001A00,#002800)",
-    border:   "#22AC3844",
+    link:     "#",   // ← LINK AFFILIATE KUCOIN
+    bg_dark:  "linear-gradient(135deg,#001A04 0%,#002808 100%)",
+    bg_light: "linear-gradient(135deg,#EAFFF0 0%,#D0FFD8 100%)",
+    border:   "#22AC3855",
     accent:   "#22AC38",
+    ctaColor: "#001A04",
   },
   {
-    logo:     "🇻🇳",
+    logoSvg: `<svg viewBox="0 0 48 48" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="24" fill="#1652F0"/>
+      <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="11" font-weight="900" font-family="Arial">BingX</text>
+    </svg>`,
+    exchange: "BINGX",
+    tag:      "📈 COPY",
+    tagColor: "#1652F0",
+    offer:    "Hoàn 25% phí + $100 cho người mới",
+    sub:      "Social Trading · Copy Trade thông minh · 1000+ cặp giao dịch",
+    cta:      "Đăng ký",
+    link:     "#",   // ← LINK AFFILIATE BINGX
+    bg_dark:  "linear-gradient(135deg,#000D24 0%,#001440 100%)",
+    bg_light: "linear-gradient(135deg,#EAF0FF 0%,#D4E2FF 100%)",
+    border:   "#1652F055",
+    accent:   "#4D7FF5",
+    ctaColor: "#fff",
+  },
+  {
+    logoSvg: `<svg viewBox="0 0 48 48" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="24" fill="#D0021B"/>
+      <text x="24" y="20" text-anchor="middle" fill="white" font-size="9" font-weight="900" font-family="Arial">🇻🇳</text>
+      <text x="24" y="34" text-anchor="middle" fill="white" font-size="10" font-weight="900" font-family="Arial">CAEX</text>
+    </svg>`,
     exchange: "CAEX",
-    offer:    "Sàn Việt Nam – Phí 0% tháng đầu",
-    sub:      "VNĐ ↔ USDT · Hỗ trợ 24/7 tiếng Việt",
-    cta:      "Đăng ký miễn phí",
-    link:     "#",   // ← THAY BẰNG LINK CAEX CỦA BẠN
-    bg:       "linear-gradient(135deg,#1A0000,#2A0000)",
-    border:   "#FF000044",
-    accent:   "#FF6B6B",
+    tag:      "🇻🇳 VIỆT NAM",
+    tagColor: "#FF6B6B",
+    offer:    "Phí 0% tháng đầu · Nạp rút VNĐ siêu nhanh",
+    sub:      "Sàn Việt uy tín · Hỗ trợ 24/7 tiếng Việt · KYC dễ dàng",
+    cta:      "Thử ngay miễn phí",
+    link:     "#",   // ← LINK CAEX
+    bg_dark:  "linear-gradient(135deg,#200005 0%,#300008 100%)",
+    bg_light: "linear-gradient(135deg,#FFF0F0 0%,#FFE0E0 100%)",
+    border:   "#D0021B55",
+    accent:   "#FF4444",
+    ctaColor: "#fff",
   },
 ];
 
-let adCurrent   = 0;
-let adTimer     = null;
-const adBanner  = document.getElementById("adBanner");
-const adDots    = document.getElementById("adDots");
+let adCurrent = 0;
+let adTimer   = null;
+const adBanner = document.getElementById("adBanner");
+const adDots   = document.getElementById("adDots");
+
+function isLight() { return document.body.classList.contains("light"); }
 
 function renderAdSlide(idx) {
-  const ad = ADS_DATA[idx];
-  // Remove old slide
+  const ad  = ADS_DATA[idx];
   const old = adBanner.querySelector(".ad-slide");
-  if (old) old.remove();
+  if (old) { old.style.opacity="0"; setTimeout(()=>old.remove(),200); }
 
   const slide = document.createElement("a");
-  slide.className  = "ad-slide active";
-  slide.href       = ad.link;
-  slide.target     = "_blank";
-  slide.rel        = "noopener";
-  slide.style.cssText = `background:${ad.bg};border-color:${ad.border};`;
-  slide.innerHTML  = `
-    <div class="ad-logo" style="border-color:${ad.border};">${ad.logo}</div>
+  slide.className = "ad-slide active";
+  slide.href      = ad.link;
+  slide.target    = "_blank";
+  slide.rel       = "noopener";
+  slide.style.cssText = `
+    background: ${isLight() ? ad.bg_light : ad.bg_dark};
+    border: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  `;
+  slide.innerHTML = `
+    <div class="ad-logo" style="background:transparent;">${ad.logoSvg}</div>
     <div class="ad-body">
+      <span class="ad-tag" style="background:${ad.accent}22;color:${ad.accent};border:1px solid ${ad.accent}44;">${ad.tag}</span>
       <div class="ad-exchange" style="color:${ad.accent};">${ad.exchange}</div>
       <div class="ad-offer">${ad.offer}</div>
       <div class="ad-sub">${ad.sub}</div>
     </div>
-    <div class="ad-cta" style="background:${ad.accent};color:#050A0F;">${ad.cta}</div>`;
+    <div class="ad-cta" style="background:${ad.accent};color:${ad.ctaColor};">${ad.cta} →</div>
+  `;
   adBanner.insertBefore(slide, adDots);
+  requestAnimationFrame(() => requestAnimationFrame(() => { slide.style.opacity="1"; }));
 
-  // Update dots
-  adDots.querySelectorAll(".ad-dot").forEach((d,i) => d.classList.toggle("active", i===idx));
+  adDots.querySelectorAll(".ad-dot").forEach((d,i) => {
+    d.classList.toggle("active", i===idx);
+    d.style.background = i===idx ? ad.accent : "";
+  });
 }
 
 function initAdBanner() {
   // Build dots
-  ADS_DATA.forEach((_, i) => {
+  ADS_DATA.forEach((_,i) => {
     const d = document.createElement("span");
     d.className = "ad-dot" + (i===0?" active":"");
     d.addEventListener("click", () => { adCurrent=i; renderAdSlide(i); resetAdTimer(); });
     adDots.appendChild(d);
   });
 
+  // Prev / Next arrows
+  const prev = document.createElement("div");
+  prev.className="ad-arrow prev"; prev.textContent="‹";
+  prev.addEventListener("click", ()=>{ adCurrent=(adCurrent-1+ADS_DATA.length)%ADS_DATA.length; renderAdSlide(adCurrent); resetAdTimer(); });
+
+  const next = document.createElement("div");
+  next.className="ad-arrow next"; next.textContent="›";
+  next.addEventListener("click", ()=>{ adCurrent=(adCurrent+1)%ADS_DATA.length; renderAdSlide(adCurrent); resetAdTimer(); });
+
+  adBanner.appendChild(prev);
+  adBanner.appendChild(next);
+
   renderAdSlide(0);
 
-  function nextAd() {
-    adCurrent = (adCurrent + 1) % ADS_DATA.length;
-    renderAdSlide(adCurrent);
-  }
-  function resetAdTimer() { clearInterval(adTimer); adTimer = setInterval(nextAd, 4000); }
+  function resetAdTimer() { clearInterval(adTimer); adTimer = setInterval(()=>{ adCurrent=(adCurrent+1)%ADS_DATA.length; renderAdSlide(adCurrent); }, 4500); }
   resetAdTimer();
 
-  // Pause on hover
-  adBanner.addEventListener("mouseenter", () => clearInterval(adTimer));
+  adBanner.addEventListener("mouseenter", ()=>clearInterval(adTimer));
   adBanner.addEventListener("mouseleave", resetAdTimer);
+
+  // Re-render on theme change to update background
+  document.getElementById("themeToggle").addEventListener("click", ()=>{
+    setTimeout(()=>renderAdSlide(adCurrent), 50);
+  });
 }
 initAdBanner();
 
