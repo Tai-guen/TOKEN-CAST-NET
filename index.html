@@ -78,10 +78,8 @@
         </div>
       </div>
 
-      <!-- RIGHT: Crypto Index + Ad Banner -->
-      <div class="hero-right-col">
-
-        <!-- CRYPTO INDEX CARD -->
+      <!-- MIDDLE: Crypto Index Card -->
+      <div class="hero-mid-col">
         <div class="crypto-index-card">
           <div class="ci-header">
             <span class="ci-title">◈ CRYPTO INDEX</span>
@@ -128,23 +126,21 @@
           </div>
           <div class="ci-updated" id="idx-updated">Đang tải...</div>
         </div>
+      </div>
 
-        <!-- ═══════════════════════════════════════
-             AD BANNER – CASHBACK SÀN GIAO DỊCH
-             ═══════════════════════════════════════
-             HƯỚNG DẪN CHỈNH SỬA:
-             Tìm const ADS_DATA bên dưới để:
-             - Đổi link affiliate: trường "link"
-             - Đổi % cashback:    trường "offer"
-             - Đổi màu nền:       trường "bg"
-             - Thêm/bớt sàn:      thêm/xóa object {}
-        ═══════════════════════════════════════ -->
+      <!-- RIGHT: Large Ad Banner (vị trí số 2) -->
+      <!-- ═══════════════════════════════════════════
+           AD BANNER – CASHBACK SÀN GIAO DỊCH
+           HƯỚNG DẪN ĐỔI LINK AFFILIATE:
+           Tìm const ADS_DATA trong thẻ <script>
+           Sửa trường link: "#" → link của bạn
+      ═══════════════════════════════════════════ -->
+      <div class="hero-ad-col">
         <div class="ad-banner-wrap" id="adBanner">
-          <!-- Rendered by JS -->
           <div class="ad-dots" id="adDots"></div>
         </div>
+      </div>
 
-      </div><!-- /hero-right-col -->
     </div><!-- /hero-inner -->
   </section>
 
@@ -532,73 +528,281 @@ const adDots   = document.getElementById("adDots");
 
 function isLight() { return document.body.classList.contains("light"); }
 
+// ── FUTURISTIC SVG ART per exchange ──────────────
+function getAdArt(ad) {
+  const c = ad.accent;
+  const arts = {
+    BINANCE: `<svg width="100%" height="100%" viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="bg1" cx="70%" cy="30%"><stop offset="0%" stop-color="${c}" stop-opacity="0.25"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient>
+        <filter id="glow1"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <rect width="320" height="460" fill="#1C1500"/>
+      <rect width="320" height="460" fill="url(#bg1)"/>
+      <!-- Chart bars -->
+      <rect x="20" y="260" width="22" height="80" rx="3" fill="${c}" opacity="0.35"/>
+      <rect x="50" y="230" width="22" height="110" rx="3" fill="${c}" opacity="0.45"/>
+      <rect x="80" y="250" width="22" height="90" rx="3" fill="${c}" opacity="0.35"/>
+      <rect x="110" y="200" width="22" height="140" rx="3" fill="${c}" opacity="0.55"/>
+      <rect x="140" y="180" width="22" height="160" rx="3" fill="${c}" opacity="0.65"/>
+      <rect x="170" y="160" width="22" height="180" rx="3" fill="${c}" opacity="0.75"/>
+      <rect x="200" y="140" width="22" height="200" rx="3" fill="${c}" opacity="0.5"/>
+      <rect x="230" y="120" width="22" height="220" rx="3" fill="${c}" opacity="0.4"/>
+      <!-- Grid lines -->
+      <line x1="0" y1="200" x2="320" y2="200" stroke="${c}" stroke-opacity="0.08" stroke-width="1"/>
+      <line x1="0" y1="250" x2="320" y2="250" stroke="${c}" stroke-opacity="0.08" stroke-width="1"/>
+      <line x1="0" y1="300" x2="320" y2="300" stroke="${c}" stroke-opacity="0.08" stroke-width="1"/>
+      <!-- Price line -->
+      <polyline points="20,280 50,240 80,255 110,210 140,185 170,162 200,148 230,125 280,110" fill="none" stroke="${c}" stroke-width="2.5" stroke-opacity="0.9" filter="url(#glow1)"/>
+      <!-- Hexagons (blockchain nodes) -->
+      <polygon points="270,60 285,69 285,87 270,96 255,87 255,69" fill="none" stroke="${c}" stroke-width="1.5" stroke-opacity="0.5"/>
+      <polygon points="240,30 252,37 252,51 240,58 228,51 228,37" fill="none" stroke="${c}" stroke-width="1" stroke-opacity="0.3"/>
+      <circle cx="270" cy="78" r="4" fill="${c}" opacity="0.7"/>
+      <!-- Bitcoin symbol large faded -->
+      <text x="200" y="100" font-family="Arial" font-size="90" font-weight="900" fill="${c}" opacity="0.06" text-anchor="middle">₿</text>
+    </svg>`,
+
+    OKX: `<svg width="100%" height="100%" viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <rect width="320" height="460" fill="#0A0A0A"/>
+      <defs><radialGradient id="bg2" cx="50%" cy="40%"><stop offset="0%" stop-color="#555" stop-opacity="0.18"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
+      <rect width="320" height="460" fill="url(#bg2)"/>
+      <!-- Grid matrix -->
+      ${Array.from({length:8},(_,i)=>`<line x1="${i*46}" y1="0" x2="${i*46}" y2="460" stroke="#fff" stroke-opacity="0.03" stroke-width="1"/>`).join('')}
+      ${Array.from({length:10},(_,i)=>`<line x1="0" y1="${i*46}" x2="320" y2="${i*46}" stroke="#fff" stroke-opacity="0.03" stroke-width="1"/>`).join('')}
+      <!-- OKX cubes -->
+      <rect x="220" y="30" width="40" height="40" rx="4" fill="none" stroke="#fff" stroke-width="1.5" stroke-opacity="0.25"/>
+      <rect x="230" y="40" width="40" height="40" rx="4" fill="none" stroke="#fff" stroke-width="1" stroke-opacity="0.15"/>
+      <!-- Candlesticks -->
+      <line x1="30" y1="150" x2="30" y2="320" stroke="#fff" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="24" y="200" width="12" height="60" rx="2" fill="#fff" opacity="0.25"/>
+      <line x1="60" y1="180" x2="60" y2="300" stroke="#fff" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="54" y="220" width="12" height="40" rx="2" fill="#e74c3c" opacity="0.5"/>
+      <line x1="90" y1="170" x2="90" y2="310" stroke="#fff" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="84" y="200" width="12" height="70" rx="2" fill="#fff" opacity="0.25"/>
+      <line x1="120" y1="160" x2="120" y2="290" stroke="#fff" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="114" y="190" width="12" height="60" rx="2" fill="#e74c3c" opacity="0.5"/>
+      <line x1="150" y1="140" x2="150" y2="280" stroke="#fff" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="144" y="170" width="12" height="80" rx="2" fill="#fff" opacity="0.35"/>
+      <text x="160" y="120" font-family="Arial" font-size="80" font-weight="900" fill="#fff" opacity="0.04" text-anchor="middle">OKX</text>
+    </svg>`,
+
+    BYBIT: `<svg width="100%" height="100%" viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="byg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#001228"/><stop offset="100%" stop-color="#002855"/>
+        </linearGradient>
+        <filter id="glow3"><feGaussianBlur stdDeviation="4"/></filter>
+      </defs>
+      <rect width="320" height="460" fill="url(#byg)"/>
+      <!-- Glow orb -->
+      <circle cx="200" cy="120" r="80" fill="${c}" opacity="0.12" filter="url(#glow3)"/>
+      <!-- Circuit board lines -->
+      <path d="M40,100 L100,100 L100,150 L160,150 L160,200" stroke="${c}" stroke-width="1.5" stroke-opacity="0.3" fill="none"/>
+      <circle cx="100" cy="100" r="4" fill="${c}" opacity="0.6"/>
+      <circle cx="160" cy="150" r="4" fill="${c}" opacity="0.6"/>
+      <path d="M200,80 L200,130 L260,130 L260,180" stroke="${c}" stroke-width="1.5" stroke-opacity="0.25" fill="none"/>
+      <circle cx="200" cy="130" r="4" fill="${c}" opacity="0.5"/>
+      <!-- Ascending chart -->
+      <polyline points="20,380 60,350 100,330 140,300 180,265 220,230 265,195 290,170" fill="none" stroke="${c}" stroke-width="3" stroke-opacity="0.85"/>
+      <polyline points="20,380 60,350 100,330 140,300 180,265 220,230 265,195 290,170 290,460 20,460" fill="${c}" fill-opacity="0.08"/>
+      <!-- Triangle/arrow motif -->
+      <polygon points="260,60 290,100 230,100" fill="none" stroke="${c}" stroke-width="2" stroke-opacity="0.4"/>
+      <text x="160" y="220" font-family="Arial" font-size="70" font-weight="900" fill="${c}" opacity="0.05" text-anchor="middle">BYBIT</text>
+    </svg>`,
+
+    BITGET: `<svg width="100%" height="100%" viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="btg" cx="50%" cy="30%">
+          <stop offset="0%" stop-color="${c}" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#001618" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="320" height="460" fill="#001618"/>
+      <rect width="320" height="460" fill="url(#btg)"/>
+      <!-- Copy trade arrows -->
+      <path d="M240,80 Q280,120 240,160" stroke="${c}" stroke-width="2" fill="none" stroke-opacity="0.5"/>
+      <polygon points="245,155 235,170 255,170" fill="${c}" opacity="0.5"/>
+      <path d="M200,90 Q240,130 200,170" stroke="${c}" stroke-width="1.5" fill="none" stroke-opacity="0.3"/>
+      <!-- Network nodes -->
+      <circle cx="80" cy="120" r="8" fill="${c}" opacity="0.5"/>
+      <circle cx="140" cy="90" r="6" fill="${c}" opacity="0.35"/>
+      <circle cx="180" cy="140" r="5" fill="${c}" opacity="0.3"/>
+      <line x1="80" y1="120" x2="140" y2="90" stroke="${c}" stroke-opacity="0.25" stroke-width="1.5"/>
+      <line x1="140" y1="90" x2="180" y2="140" stroke="${c}" stroke-opacity="0.2" stroke-width="1.5"/>
+      <line x1="80" y1="120" x2="180" y2="140" stroke="${c}" stroke-opacity="0.15" stroke-width="1"/>
+      <!-- Price wave -->
+      <path d="M10,300 Q50,260 90,280 T170,250 T250,220 T310,190" stroke="${c}" stroke-width="2.5" fill="none" stroke-opacity="0.7"/>
+      <text x="160" y="210" font-family="Arial" font-size="55" font-weight="900" fill="${c}" opacity="0.06" text-anchor="middle">BITGET</text>
+    </svg>`,
+
+    KUCOIN: `<svg width="100%" height="100%" viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="kcg" cx="40%" cy="35%">
+          <stop offset="0%" stop-color="${c}" stop-opacity="0.22"/>
+          <stop offset="100%" stop-color="#001A04" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="320" height="460" fill="#001A04"/>
+      <rect width="320" height="460" fill="url(#kcg)"/>
+      <!-- Leaves/organic shapes -->
+      <ellipse cx="260" cy="80" rx="40" ry="20" transform="rotate(-30 260 80)" fill="${c}" opacity="0.12"/>
+      <ellipse cx="270" cy="60" rx="30" ry="15" transform="rotate(-30 270 60)" fill="${c}" opacity="0.08"/>
+      <!-- Yield bars -->
+      <rect x="30" y="180" width="18" height="160" rx="9" fill="${c}" opacity="0.15"/>
+      <rect x="60" y="160" width="18" height="180" rx="9" fill="${c}" opacity="0.2"/>
+      <rect x="90" y="140" width="18" height="200" rx="9" fill="${c}" opacity="0.25"/>
+      <rect x="120" y="120" width="18" height="220" rx="9" fill="${c}" opacity="0.35"/>
+      <rect x="150" y="100" width="18" height="240" rx="9" fill="${c}" opacity="0.45"/>
+      <rect x="180" y="90" width="18" height="250" rx="9" fill="${c}" opacity="0.4"/>
+      <!-- % sign -->
+      <text x="260" y="200" font-family="Arial" font-size="100" font-weight="900" fill="${c}" opacity="0.08" text-anchor="middle">%</text>
+      <text x="160" y="360" font-family="Arial" font-size="50" font-weight="900" fill="${c}" opacity="0.05" text-anchor="middle">KUCOIN</text>
+    </svg>`,
+
+    BINGX: `<svg width="100%" height="100%" viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="bxg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#000D24"/><stop offset="100%" stop-color="#001440"/>
+        </linearGradient>
+      </defs>
+      <rect width="320" height="460" fill="url(#bxg)"/>
+      <!-- Social trading network -->
+      <circle cx="160" cy="140" r="30" fill="none" stroke="${c}" stroke-width="2" stroke-opacity="0.35"/>
+      <circle cx="80" cy="200" r="20" fill="none" stroke="${c}" stroke-width="1.5" stroke-opacity="0.25"/>
+      <circle cx="240" cy="180" r="25" fill="none" stroke="${c}" stroke-width="1.5" stroke-opacity="0.25"/>
+      <circle cx="120" cy="280" r="15" fill="none" stroke="${c}" stroke-width="1" stroke-opacity="0.2"/>
+      <line x1="160" y1="140" x2="80" y2="200" stroke="${c}" stroke-opacity="0.2" stroke-width="1.5"/>
+      <line x1="160" y1="140" x2="240" y2="180" stroke="${c}" stroke-opacity="0.2" stroke-width="1.5"/>
+      <line x1="80" y1="200" x2="120" y2="280" stroke="${c}" stroke-opacity="0.15" stroke-width="1"/>
+      <!-- Arrow up = profitable copy -->
+      <polygon points="160,80 175,110 145,110" fill="${c}" opacity="0.5"/>
+      <rect x="155" y="108" width="10" height="30" rx="2" fill="${c}" opacity="0.5"/>
+      <!-- Chart -->
+      <polyline points="20,380 70,340 120,310 180,270 240,235 290,200" fill="none" stroke="${c}" stroke-width="2.5" stroke-opacity="0.6"/>
+      <text x="160" y="430" font-family="Arial" font-size="45" font-weight="900" fill="${c}" opacity="0.06" text-anchor="middle">BingX</text>
+    </svg>`,
+
+    CAEX: `<svg width="100%" height="100%" viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="cxg" cx="50%" cy="30%">
+          <stop offset="0%" stop-color="${c}" stop-opacity="0.22"/>
+          <stop offset="100%" stop-color="#200005" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="320" height="460" fill="#200005"/>
+      <rect width="320" height="460" fill="url(#cxg)"/>
+      <!-- Vietnam flag star -->
+      <polygon points="200,60 207,82 230,82 212,95 219,117 200,104 181,117 188,95 170,82 193,82"
+        fill="${c}" opacity="0.4"/>
+      <!-- VND/USDT exchange arrows -->
+      <path d="M60,180 L140,180" stroke="${c}" stroke-width="2" stroke-opacity="0.5"/>
+      <polygon points="140,174 155,180 140,186" fill="${c}" opacity="0.5"/>
+      <path d="M155,220 L75,220" stroke="${c}" stroke-width="2" stroke-opacity="0.5"/>
+      <polygon points="75,214 60,220 75,226" fill="${c}" opacity="0.5"/>
+      <text x="100" y="175" font-family="Arial" font-size="12" fill="${c}" opacity="0.6" text-anchor="middle">VNĐ</text>
+      <text x="180" y="235" font-family="Arial" font-size="12" fill="${c}" opacity="0.6" text-anchor="middle">USDT</text>
+      <!-- Bars -->
+      <rect x="30" y="270" width="20" height="100" rx="4" fill="${c}" opacity="0.2"/>
+      <rect x="60" y="250" width="20" height="120" rx="4" fill="${c}" opacity="0.3"/>
+      <rect x="90" y="230" width="20" height="140" rx="4" fill="${c}" opacity="0.4"/>
+      <rect x="120" y="210" width="20" height="160" rx="4" fill="${c}" opacity="0.5"/>
+      <text x="220" y="350" font-family="Arial" font-size="50" font-weight="900" fill="${c}" opacity="0.07" text-anchor="middle">CAEX</text>
+    </svg>`,
+  };
+  return arts[ad.exchange] || arts.BINANCE;
+}
+
 function renderAdSlide(idx) {
   const ad  = ADS_DATA[idx];
   const old = adBanner.querySelector(".ad-slide");
-  if (old) { old.style.opacity="0"; setTimeout(()=>old.remove(),200); }
+  if (old) {
+    old.style.opacity = "0";
+    old.style.transform = "translateX(-16px)";
+    setTimeout(() => old.remove(), 250);
+  }
 
   const slide = document.createElement("a");
-  slide.className = "ad-slide active";
+  slide.className = "ad-slide active slide-in";
   slide.href      = ad.link;
   slide.target    = "_blank";
   slide.rel       = "noopener";
-  slide.style.cssText = `
-    background: ${isLight() ? ad.bg_light : ad.bg_dark};
-    border: none;
-    opacity: 0;
-    transition: opacity 0.35s ease;
-  `;
+  slide.style.minHeight = "460px";
+
   slide.innerHTML = `
-    <div class="ad-logo" style="background:transparent;">${ad.logoSvg}</div>
-    <div class="ad-body">
-      <span class="ad-tag" style="background:${ad.accent}22;color:${ad.accent};border:1px solid ${ad.accent}44;">${ad.tag}</span>
+    <div class="ad-art">${getAdArt(ad)}</div>
+    <div class="ad-content-wrap">
+      <div class="ad-logo-big">${ad.logoSvg}</div>
+      <span class="ad-tag" style="background:${ad.accent}28;color:${ad.accent};border:1px solid ${ad.accent}44;">${ad.tag}</span>
       <div class="ad-exchange" style="color:${ad.accent};">${ad.exchange}</div>
       <div class="ad-offer">${ad.offer}</div>
       <div class="ad-sub">${ad.sub}</div>
-    </div>
-    <div class="ad-cta" style="background:${ad.accent};color:${ad.ctaColor};">${ad.cta} →</div>
-  `;
-  adBanner.insertBefore(slide, adDots);
-  requestAnimationFrame(() => requestAnimationFrame(() => { slide.style.opacity="1"; }));
+      <div class="ad-cta" style="background:${ad.accent};color:${ad.ctaColor};">${ad.cta} </div>
+    </div>`;
 
-  adDots.querySelectorAll(".ad-dot").forEach((d,i) => {
-    d.classList.toggle("active", i===idx);
-    d.style.background = i===idx ? ad.accent : "";
+  adBanner.insertBefore(slide, adDots);
+
+  // Update dots
+  adDots.querySelectorAll(".ad-dot").forEach((d, i) => {
+    d.classList.toggle("active", i === idx);
+    d.style.background = i === idx ? ad.accent : "";
   });
 }
 
 function initAdBanner() {
-  // Build dots
-  ADS_DATA.forEach((_,i) => {
+  // Dots
+  ADS_DATA.forEach((_, i) => {
     const d = document.createElement("span");
-    d.className = "ad-dot" + (i===0?" active":"");
-    d.addEventListener("click", () => { adCurrent=i; renderAdSlide(i); resetAdTimer(); });
+    d.className = "ad-dot" + (i === 0 ? " active" : "");
+    d.addEventListener("click", () => { adCurrent = i; renderAdSlide(i); resetAdTimer(); });
     adDots.appendChild(d);
   });
 
-  // Prev / Next arrows
-  const prev = document.createElement("div");
-  prev.className="ad-arrow prev"; prev.textContent="‹";
-  prev.addEventListener("click", ()=>{ adCurrent=(adCurrent-1+ADS_DATA.length)%ADS_DATA.length; renderAdSlide(adCurrent); resetAdTimer(); });
-
-  const next = document.createElement("div");
-  next.className="ad-arrow next"; next.textContent="›";
-  next.addEventListener("click", ()=>{ adCurrent=(adCurrent+1)%ADS_DATA.length; renderAdSlide(adCurrent); resetAdTimer(); });
-
-  adBanner.appendChild(prev);
-  adBanner.appendChild(next);
+  // Arrows
+  ["prev","next"].forEach(dir => {
+    const btn = document.createElement("div");
+    btn.className = "ad-arrow " + dir;
+    btn.textContent = dir === "prev" ? "‹" : "›";
+    btn.addEventListener("click", () => {
+      adCurrent = dir === "prev"
+        ? (adCurrent - 1 + ADS_DATA.length) % ADS_DATA.length
+        : (adCurrent + 1) % ADS_DATA.length;
+      renderAdSlide(adCurrent);
+      resetAdTimer();
+    });
+    adBanner.appendChild(btn);
+  });
 
   renderAdSlide(0);
 
-  function resetAdTimer() { clearInterval(adTimer); adTimer = setInterval(()=>{ adCurrent=(adCurrent+1)%ADS_DATA.length; renderAdSlide(adCurrent); }, 4500); }
+  function resetAdTimer() {
+    clearInterval(adTimer);
+    adTimer = setInterval(() => {
+      adCurrent = (adCurrent + 1) % ADS_DATA.length;
+      renderAdSlide(adCurrent);
+    }, 4500);
+  }
   resetAdTimer();
 
-  adBanner.addEventListener("mouseenter", ()=>clearInterval(adTimer));
+  adBanner.addEventListener("mouseenter", () => clearInterval(adTimer));
   adBanner.addEventListener("mouseleave", resetAdTimer);
 
-  // Re-render on theme change to update background
-  document.getElementById("themeToggle").addEventListener("click", ()=>{
-    setTimeout(()=>renderAdSlide(adCurrent), 50);
+  // Swipe on mobile
+  let touchX = 0;
+  adBanner.addEventListener("touchstart", e => { touchX = e.touches[0].clientX; }, {passive:true});
+  adBanner.addEventListener("touchend", e => {
+    const diff = touchX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      adCurrent = diff > 0
+        ? (adCurrent + 1) % ADS_DATA.length
+        : (adCurrent - 1 + ADS_DATA.length) % ADS_DATA.length;
+      renderAdSlide(adCurrent);
+      resetAdTimer();
+    }
+  }, {passive:true});
+
+  // Re-render on theme toggle
+  document.getElementById("themeToggle").addEventListener("click", () => {
+    setTimeout(() => renderAdSlide(adCurrent), 50);
   });
 }
 initAdBanner();
