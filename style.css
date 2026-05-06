@@ -786,13 +786,13 @@ body.light .hero-grid-bg {
 
   /* Ad banner mobile — FIX hiển thị nội dung đè lên SVG art */
   .ad-banner-wrap {
-    min-height: 160px !important;
-    height: 160px !important;
+    min-height: 260px !important;
+    height: 260px !important;
     border-radius: 14px !important;
   }
   .ad-slide {
-    min-height: 160px !important;
-    height: 160px !important;
+    min-height: 260px !important;
+    height: 260px !important;
     display: flex !important;
     flex-direction: column !important;
     position: relative !important;
